@@ -46,6 +46,8 @@ list(APPEND SERVICE_SOMEIP_GEN_SRCS
 )
 set(PROJECT_SOURCES
         main.cpp
+        config/vsomeip.json
+        config/commonapi.ini
         ${SERVICE_COMMONAPI_GEN_SRCS}
         ${COMMON_SOMEIP_GEN_SRCS}
         ${SERVICE_SOMEIP_GEN_SRCS}
@@ -56,6 +58,7 @@ include_directories(
     ${VSOMEIP_INCLUDE_DIRS}
     src-gen/someip
     src-gen/core
+    config
 )
 add_executable(StubLpa ${PROJECT_SOURCES}
     StubImplement.h StubImplement.cpp)
