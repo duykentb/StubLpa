@@ -7,10 +7,10 @@
 * If a copy of the MPL was not distributed with this file, You can obtain one at
 * http://mozilla.org/MPL/2.0/.
 */
-#ifndef V2_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_PROXY_BASE_HPP_
-#define V2_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_PROXY_BASE_HPP_
+#ifndef V3_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_PROXY_BASE_HPP_
+#define V3_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_PROXY_BASE_HPP_
 
-#include <v2/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelector.hpp>
+#include <v3/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelector.hpp>
 
 
 #include <de/bmw/infotainment/telematic/simprofileselectortypes/SimProfileSelectorTypes.hpp>
@@ -39,7 +39,7 @@
 #undef HAS_DEFINED_COMMONAPI_INTERNAL_COMPILATION_HERE
 #endif
 
-namespace v2 {
+namespace v3 {
 namespace de {
 namespace bmw {
 namespace infotainment {
@@ -50,18 +50,17 @@ class SimProfileSelectorProxyBase
     : virtual public CommonAPI::Proxy {
 public:
     typedef CommonAPI::Event<
-        ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::InstallationResult
+        ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::ActivationCode, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::InstallationResult
     > DownloadAndInstallResultEvent;
     typedef CommonAPI::ObservableReadonlyAttribute<int64_t> CsimMemorySpaceAttribute;
-    typedef CommonAPI::ObservableReadonlyAttribute<std::string> CsimNetworkStatusAttribute;
+    typedef CommonAPI::ObservableReadonlyAttribute<std::string> CsimNetworkAttribute;
     typedef CommonAPI::ObservableReadonlyAttribute<::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Eid> EidAttribute;
     typedef CommonAPI::ObservableReadonlyAttribute<::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Imei> ImeiAttribute;
-    typedef CommonAPI::ObservableReadonlyAttribute<uint8_t> PinRetriesAttribute;
     typedef CommonAPI::ObservableReadonlyAttribute<std::vector< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::CSimProfile >> ProfilesAttribute;
-    typedef CommonAPI::ObservableReadonlyAttribute<uint8_t> PukRetriesAttribute;
+    typedef CommonAPI::ObservableReadonlyAttribute<std::string> PsimNetworkAttribute;
 
     typedef std::function<void(const CommonAPI::CallStatus&, const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::ModifyPinResult&)> ChangePinAsyncCallback;
-    typedef std::function<void(const CommonAPI::CallStatus&, const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::HotspotConfigResult&)> ConfigureProfileHotspotAsyncCallback;
+    typedef std::function<void(const CommonAPI::CallStatus&, const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::DataConnectionConfigResult&)> ConfigureDataConnectionAsyncCallback;
     typedef std::function<void(const CommonAPI::CallStatus&, const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::RoamingConfigResult&)> ConfigureProfileRoamingAsyncCallback;
     typedef std::function<void(const CommonAPI::CallStatus&, const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::RemovePinResult&)> DisablePinAsyncCallback;
     typedef std::function<void(const CommonAPI::CallStatus&, const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::SetPinResult&)> EnablePinAsyncCallback;
@@ -89,8 +88,8 @@ public:
      * description: 
      * Standard[en]=WAVE provides an interface to MGU where it send the information of Hotspot (data connection) status for the currently enabled profile.
      */
-    virtual void configureProfileHotspot(::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid _iccid, bool _hotspotActive, CommonAPI::CallStatus &_internalCallStatus, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::HotspotConfigResult &_hospotconfig, const CommonAPI::CallInfo *_info = nullptr) = 0;
-    virtual std::future<CommonAPI::CallStatus> configureProfileHotspotAsync(const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid &_iccid, const bool &_hotspotActive, ConfigureProfileHotspotAsyncCallback _callback = nullptr, const CommonAPI::CallInfo *_info = nullptr) = 0;
+    virtual void configureDataConnection(::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid _iccid, bool _hotspotActive, CommonAPI::CallStatus &_internalCallStatus, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::DataConnectionConfigResult &_dataConfig, const CommonAPI::CallInfo *_info = nullptr) = 0;
+    virtual std::future<CommonAPI::CallStatus> configureDataConnectionAsync(const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid &_iccid, const bool &_hotspotActive, ConfigureDataConnectionAsyncCallback _callback = nullptr, const CommonAPI::CallInfo *_info = nullptr) = 0;
     /*
      * description: 
      * Standard[en]=WAVE provides an interface to MGU where it send the information of Roaming status for the currently enabled profile
@@ -161,7 +160,7 @@ public:
      * description: 
      * Standard[en]=WAVE provides an interface to the MGU where it can receive the current network status of the cSIM
      */
-    virtual CsimNetworkStatusAttribute& getCsimNetworkStatusAttribute() = 0;
+    virtual CsimNetworkAttribute& getCsimNetworkAttribute() = 0;
     /*
      * description: 
      * Standard[en]=WAVE provides an interface to the MGU where it can receive the EID of the CSIM
@@ -174,19 +173,15 @@ public:
     virtual ImeiAttribute& getImeiAttribute() = 0;
     /*
      * description: 
-     * Standard[en]=WAVE provides an interface to MGU where it can request he number of PIN retries that the current ICCID has left
-     */
-    virtual PinRetriesAttribute& getPinRetriesAttribute() = 0;
-    /*
-     * description: 
      * Standard[en]=WAVE provides an interface to the MGU where it can receive a list of the  existing profiles stored in the consumer SIM.
      */
     virtual ProfilesAttribute& getProfilesAttribute() = 0;
     /*
      * description: 
-     * Standard[en]=WAVE provides an interface to MGU where it can request the number of PUK retries that the current ICCID has left
+     * Standard[en]=WAVE provides an interface to the MGU where it can receive the current network status of the pSIM
+     * (at)example: 0 - 5
      */
-    virtual PukRetriesAttribute& getPukRetriesAttribute() = 0;
+    virtual PsimNetworkAttribute& getPsimNetworkAttribute() = 0;
 
     virtual std::future<void> getCompletionFuture() = 0;
 };
@@ -196,10 +191,10 @@ public:
 } // namespace infotainment
 } // namespace bmw
 } // namespace de
-} // namespace v2
+} // namespace v3
 
 
 // Compatibility
-namespace v2_0 = v2;
+namespace v3_0 = v3;
 
-#endif // V2_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_PROXY_BASE_HPP_
+#endif // V3_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_PROXY_BASE_HPP_

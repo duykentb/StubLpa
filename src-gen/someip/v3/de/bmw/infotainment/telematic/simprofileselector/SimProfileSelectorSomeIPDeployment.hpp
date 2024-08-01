@@ -8,8 +8,8 @@
  * http://mozilla.org/MPL/2.0/.
  */
 
-#ifndef V2_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_SOMEIP_DEPLOYMENT_HPP_
-#define V2_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_SOMEIP_DEPLOYMENT_HPP_
+#ifndef V3_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_SOMEIP_DEPLOYMENT_HPP_
+#define V3_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_SOMEIP_DEPLOYMENT_HPP_
 
 #include <de/bmw/infotainment/telematic/simprofileselectortypes/SimProfileSelectorTypesSomeIPDeployment.hpp>
 
@@ -23,7 +23,7 @@
 #undef HAS_DEFINED_COMMONAPI_INTERNAL_COMPILATION_HERE
 #endif
 
-namespace v2 {
+namespace v3 {
 namespace de {
 namespace bmw {
 namespace infotainment {
@@ -36,7 +36,8 @@ namespace SimProfileSelector_ {
 // Type-specific deployments
 
 // Attribute-specific deployments
-COMMONAPI_EXPORT extern CommonAPI::SomeIP::StringDeployment csimNetworkStatusDeployment;
+COMMONAPI_EXPORT extern CommonAPI::SomeIP::StringDeployment csimNetworkDeployment;
+COMMONAPI_EXPORT extern CommonAPI::SomeIP::StringDeployment psimNetworkDeployment;
 
 // Argument-specific deployment
 
@@ -48,6 +49,6 @@ COMMONAPI_EXPORT extern CommonAPI::SomeIP::StringDeployment csimNetworkStatusDep
 } // namespace infotainment
 } // namespace bmw
 } // namespace de
-} // namespace v2
+} // namespace v3
 
-#endif // V2_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_SOMEIP_DEPLOYMENT_HPP_
+#endif // V3_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_SOMEIP_DEPLOYMENT_HPP_

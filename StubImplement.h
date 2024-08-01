@@ -1,11 +1,11 @@
 #ifndef STUBIMPLEMENT_H
 #define STUBIMPLEMENT_H
 
-#include "src-gen/core/v2/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelectorStubDefault.hpp"
+#include "src-gen/core/v3/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelectorStubDefault.hpp"
 #include "src-gen/core/de/bmw/infotainment/telematic/simprofileselectortypes/SimProfileSelectorTypes.hpp"
 #include "CommonAPI/CommonAPI.hpp"
 
-using namespace v2::de::bmw::infotainment::telematic::simprofileselector;
+using namespace v3::de::bmw::infotainment::telematic::simprofileselector;
 using namespace de::bmw::infotainment::telematic::simprofileselectortypes;
 class StubImplement: public SimProfileSelectorStubDefault
 {

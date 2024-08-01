@@ -13,7 +13,7 @@ int main()
     std::shared_ptr<CommonAPI::Runtime> runtime = CommonAPI::Runtime::get();
 
     std::string domain = "local";
-    std::string instance = "de.bmw.infotainment.telematic.simprofileselector.SimProfileSelector";
+    std::string instance = "1";
 
     std::shared_ptr<StubImplement> myService = std::make_shared<StubImplement>();
     bool successfullyRegistered = runtime->registerService(domain, instance, myService);

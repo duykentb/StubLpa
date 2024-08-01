@@ -7,12 +7,12 @@
  * If a copy of the MPL was not distributed with this file, You can obtain one at
  * http://mozilla.org/MPL/2.0/.
  */
-#ifndef V2_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_SIM_PROFILE_SELECTOR_SOMEIP_STUB_ADAPTER_HPP_
-#define V2_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_SIM_PROFILE_SELECTOR_SOMEIP_STUB_ADAPTER_HPP_
+#ifndef V3_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_SIM_PROFILE_SELECTOR_SOMEIP_STUB_ADAPTER_HPP_
+#define V3_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_SIM_PROFILE_SELECTOR_SOMEIP_STUB_ADAPTER_HPP_
 
-#include <v2/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelectorStub.hpp>
-#include <v2/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelectorSomeIPDeployment.hpp>
+#include <v3/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelectorStub.hpp>
 #include <de/bmw/infotainment/telematic/simprofileselectortypes/SimProfileSelectorTypesSomeIPDeployment.hpp>
+#include <v3/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelectorSomeIPDeployment.hpp>
 
 #if !defined (COMMONAPI_INTERNAL_COMPILATION)
 #define COMMONAPI_INTERNAL_COMPILATION
@@ -31,14 +31,14 @@
 #undef HAS_DEFINED_COMMONAPI_INTERNAL_COMPILATION_HERE
 #endif
 
-namespace v2 {
+namespace v3 {
 namespace de {
 namespace bmw {
 namespace infotainment {
 namespace telematic {
 namespace simprofileselector {
 
-template <typename _Stub = ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub, typename... _Stubs>
+template <typename _Stub = ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub, typename... _Stubs>
 class SimProfileSelectorSomeIPStubAdapterInternal
     : public virtual SimProfileSelectorStubAdapter,
       public CommonAPI::SomeIP::StubAdapterHelper< _Stub, _Stubs...>,
@@ -62,7 +62,7 @@ public:
      * description: 
      * Standard[en]=WAVE provides an interface to the MGU where it can receive the current network status of the cSIM
      */
-    void fireCsimNetworkStatusAttributeChanged(const std::string &_value);
+    void fireCsimNetworkAttributeChanged(const std::string &_value);
     
     /*
      * description: 
@@ -78,33 +78,28 @@ public:
     
     /*
      * description: 
-     * Standard[en]=WAVE provides an interface to MGU where it can request he number of PIN retries that the current ICCID has left
-     */
-    void firePinRetriesAttributeChanged(const uint8_t &_value);
-    
-    /*
-     * description: 
      * Standard[en]=WAVE provides an interface to the MGU where it can receive a list of the  existing profiles stored in the consumer SIM.
      */
     void fireProfilesAttributeChanged(const std::vector< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::CSimProfile > &_value);
     
     /*
      * description: 
-     * Standard[en]=WAVE provides an interface to MGU where it can request the number of PUK retries that the current ICCID has left
+     * Standard[en]=WAVE provides an interface to the MGU where it can receive the current network status of the pSIM
+     * (at)example: 0 - 5
      */
-    void firePukRetriesAttributeChanged(const uint8_t &_value);
+    void firePsimNetworkAttributeChanged(const std::string &_value);
     
     /*
      * description: 
      * Standard[en]=WAVE broadcasts the result of the download and installation the consumer SIM profile started with the sendActivationCode method
      * SPP subscribes to this broadcast after sending an activation code to start the download process
      */
-    void fireDownloadAndInstallResultEvent(const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid &_iccid, const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::InstallationResult &_installationresult);
+    void fireDownloadAndInstallResultEvent(const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid &_iccid, const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::ActivationCode &_activationCode, const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::InstallationResult &_installationresult);
 
     void deactivateManagedInstances() {}
     
     CommonAPI::SomeIP::GetAttributeStubDispatcher<
-        ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
+        ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
         CommonAPI::Version
     > getSimProfileSelectorInterfaceVersionStubDispatcher;
 
@@ -113,7 +108,7 @@ public:
      * Standard[en]=WAVE provides an interface to MGU where it can request the CSIM free memory space.
      */
     CommonAPI::SomeIP::GetAttributeStubDispatcher<
-        ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
+        ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
         int64_t,
         CommonAPI::SomeIP::IntegerDeployment<int64_t>
     > getCsimMemorySpaceAttributeStubDispatcher;
@@ -123,17 +118,17 @@ public:
      * Standard[en]=WAVE provides an interface to the MGU where it can receive the current network status of the cSIM
      */
     CommonAPI::SomeIP::GetAttributeStubDispatcher<
-        ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
+        ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
         std::string,
         CommonAPI::SomeIP::StringDeployment
-    > getCsimNetworkStatusAttributeStubDispatcher;
+    > getCsimNetworkAttributeStubDispatcher;
     
     /*
      * description: 
      * Standard[en]=WAVE provides an interface to the MGU where it can receive the EID of the CSIM
      */
     CommonAPI::SomeIP::GetAttributeStubDispatcher<
-        ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
+        ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
         ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Eid,
         CommonAPI::SomeIP::StringDeployment
     > getEidAttributeStubDispatcher;
@@ -143,47 +138,38 @@ public:
      * Standard[en]=WAVE provides an interface to the MGU where it can receive the IMEI of the CSIM
      */
     CommonAPI::SomeIP::GetAttributeStubDispatcher<
-        ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
+        ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
         ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Imei,
         CommonAPI::SomeIP::StringDeployment
     > getImeiAttributeStubDispatcher;
     
     /*
      * description: 
-     * Standard[en]=WAVE provides an interface to MGU where it can request he number of PIN retries that the current ICCID has left
-     */
-    CommonAPI::SomeIP::GetAttributeStubDispatcher<
-        ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
-        uint8_t,
-        CommonAPI::SomeIP::IntegerDeployment<uint8_t>
-    > getPinRetriesAttributeStubDispatcher;
-    
-    /*
-     * description: 
      * Standard[en]=WAVE provides an interface to the MGU where it can receive a list of the  existing profiles stored in the consumer SIM.
      */
     CommonAPI::SomeIP::GetAttributeStubDispatcher<
-        ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
+        ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
         std::vector< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::CSimProfile >,
         CommonAPI::SomeIP::ArrayDeployment< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::CSimProfileDeployment_t >
     > getProfilesAttributeStubDispatcher;
     
     /*
      * description: 
-     * Standard[en]=WAVE provides an interface to MGU where it can request the number of PUK retries that the current ICCID has left
+     * Standard[en]=WAVE provides an interface to the MGU where it can receive the current network status of the pSIM
+     * (at)example: 0 - 5
      */
     CommonAPI::SomeIP::GetAttributeStubDispatcher<
-        ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
-        uint8_t,
-        CommonAPI::SomeIP::IntegerDeployment<uint8_t>
-    > getPukRetriesAttributeStubDispatcher;
+        ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
+        std::string,
+        CommonAPI::SomeIP::StringDeployment
+    > getPsimNetworkAttributeStubDispatcher;
     
     /*
      * description: 
      * Standard[en]=WAVE provides an interface to MGU where it can send a request to modify the current PIN used to protect the cSIM profile
      */
     CommonAPI::SomeIP::MethodWithReplyStubDispatcher<
-        ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
+        ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
         std::tuple< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Pin, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Pin>,
         std::tuple< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::ModifyPinResult>,
         std::tuple< CommonAPI::SomeIP::StringDeployment, CommonAPI::SomeIP::StringDeployment, CommonAPI::SomeIP::StringDeployment>,
@@ -195,19 +181,19 @@ public:
      * Standard[en]=WAVE provides an interface to MGU where it send the information of Hotspot (data connection) status for the currently enabled profile.
      */
     CommonAPI::SomeIP::MethodWithReplyStubDispatcher<
-        ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
+        ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
         std::tuple< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid, bool>,
-        std::tuple< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::HotspotConfigResult>,
+        std::tuple< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::DataConnectionConfigResult>,
         std::tuple< CommonAPI::SomeIP::StringDeployment, CommonAPI::EmptyDeployment>,
-        std::tuple< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::HotspotConfigResultDeployment_t>
-    > configureProfileHotspotStubDispatcher;
+        std::tuple< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::DataConnectionConfigResultDeployment_t>
+    > configureDataConnectionStubDispatcher;
     
     /*
      * description: 
      * Standard[en]=WAVE provides an interface to MGU where it send the information of Roaming status for the currently enabled profile
      */
     CommonAPI::SomeIP::MethodWithReplyStubDispatcher<
-        ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
+        ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
         std::tuple< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid, bool>,
         std::tuple< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::RoamingConfigResult>,
         std::tuple< CommonAPI::SomeIP::StringDeployment, CommonAPI::EmptyDeployment>,
@@ -219,7 +205,7 @@ public:
      * Standard[en]=WAVE provides an interface to MGU where it can send a request to disable the protection of the user's SIM profile via PIN
      */
     CommonAPI::SomeIP::MethodWithReplyStubDispatcher<
-        ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
+        ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
         std::tuple< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Pin>,
         std::tuple< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::RemovePinResult>,
         std::tuple< CommonAPI::SomeIP::StringDeployment, CommonAPI::SomeIP::StringDeployment>,
@@ -231,7 +217,7 @@ public:
      * Standard[en]=WAVE provides an interface to MGU where it can send a request to enable the protection of the user's SIM profile via PIN
      */
     CommonAPI::SomeIP::MethodWithReplyStubDispatcher<
-        ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
+        ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
         std::tuple< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Pin>,
         std::tuple< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::SetPinResult>,
         std::tuple< CommonAPI::SomeIP::StringDeployment, CommonAPI::SomeIP::StringDeployment>,
@@ -243,7 +229,7 @@ public:
      * Standard[en]=WAVE provides an interface to MGU where it can request the deletion of all profiles installed in the vehicle
      */
     CommonAPI::SomeIP::MethodWithReplyStubDispatcher<
-        ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
+        ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
         std::tuple< >,
         std::tuple< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::DeleteAllResult, std::vector< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid >>,
         std::tuple< >,
@@ -255,7 +241,7 @@ public:
      * Standard[en]=WAVE provides an interface to MGU where it can request the deletion of a consumer SIM profile
      */
     CommonAPI::SomeIP::MethodWithReplyStubDispatcher<
-        ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
+        ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
         std::tuple< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid>,
         std::tuple< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::DeleteResult>,
         std::tuple< CommonAPI::SomeIP::StringDeployment>,
@@ -267,7 +253,7 @@ public:
      * Standard[en]=WAVE provides an interface to MGU where it can request the disable of a consumer SIM profile
      */
     CommonAPI::SomeIP::MethodWithReplyStubDispatcher<
-        ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
+        ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
         std::tuple< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid>,
         std::tuple< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::DisableResult>,
         std::tuple< CommonAPI::SomeIP::StringDeployment>,
@@ -280,7 +266,7 @@ public:
      * (asterisk) consumer SIM profile
      */
     CommonAPI::SomeIP::MethodWithReplyStubDispatcher<
-        ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
+        ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
         std::tuple< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid>,
         std::tuple< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::EnableResult>,
         std::tuple< CommonAPI::SomeIP::StringDeployment>,
@@ -292,7 +278,7 @@ public:
      * Standard[en]=WAVE provides an interface to MGU it can send the activation code to the SIM profile switch component
      */
     CommonAPI::SomeIP::MethodWithReplyStubDispatcher<
-        ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
+        ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
         std::tuple< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::ActivationCode, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::ConfirmationCode>,
         std::tuple< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::ActivationCodeResult>,
         std::tuple< CommonAPI::SomeIP::StringDeployment, CommonAPI::SomeIP::StringDeployment>,
@@ -304,7 +290,7 @@ public:
      * Standard[en]=WAVE provides an interface to MGU where it can check whether the PIN stored or introduced by the user for ICCID is correct
      */
     CommonAPI::SomeIP::MethodWithReplyStubDispatcher<
-        ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
+        ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
         std::tuple< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Puk, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Pin>,
         std::tuple< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::CheckPukResult>,
         std::tuple< CommonAPI::SomeIP::StringDeployment, CommonAPI::SomeIP::StringDeployment, CommonAPI::SomeIP::StringDeployment>,
@@ -316,7 +302,7 @@ public:
      * Standard[en]=WAVE provides an interface to MGU where it can check whether the PIN
      */
     CommonAPI::SomeIP::MethodWithReplyStubDispatcher<
-        ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
+        ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub,
         std::tuple< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Pin>,
         std::tuple< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::CheckPinResult>,
         std::tuple< CommonAPI::SomeIP::StringDeployment, CommonAPI::SomeIP::StringDeployment>,
@@ -334,46 +320,40 @@ public:
             std::dynamic_pointer_cast< SimProfileSelectorStub>(_stub)),
         getSimProfileSelectorInterfaceVersionStubDispatcher(&SimProfileSelectorStub::lockInterfaceVersionAttribute, &SimProfileSelectorStub::getInterfaceVersion, false, true),
         getCsimMemorySpaceAttributeStubDispatcher(
-            &::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub::lockCsimMemorySpaceAttribute,
-            &::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub::getCsimMemorySpaceAttribute,
+            &::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub::lockCsimMemorySpaceAttribute,
+            &::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub::getCsimMemorySpaceAttribute,
             false,
             _stub->hasElement(13))
         ,
-        getCsimNetworkStatusAttributeStubDispatcher(
-            &::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub::lockCsimNetworkStatusAttribute,
-            &::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub::getCsimNetworkStatusAttribute,
+        getCsimNetworkAttributeStubDispatcher(
+            &::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub::lockCsimNetworkAttribute,
+            &::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub::getCsimNetworkAttribute,
             false,
-            _stub->hasElement(14), &::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelector_::csimNetworkStatusDeployment)
+            _stub->hasElement(14), &::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelector_::csimNetworkDeployment)
         ,
         getEidAttributeStubDispatcher(
-            &::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub::lockEidAttribute,
-            &::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub::getEidAttribute,
+            &::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub::lockEidAttribute,
+            &::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub::getEidAttribute,
             false,
             _stub->hasElement(15))
         ,
         getImeiAttributeStubDispatcher(
-            &::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub::lockImeiAttribute,
-            &::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub::getImeiAttribute,
+            &::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub::lockImeiAttribute,
+            &::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub::getImeiAttribute,
             false,
             _stub->hasElement(16))
         ,
-        getPinRetriesAttributeStubDispatcher(
-            &::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub::lockPinRetriesAttribute,
-            &::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub::getPinRetriesAttribute,
+        getProfilesAttributeStubDispatcher(
+            &::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub::lockProfilesAttribute,
+            &::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub::getProfilesAttribute,
             false,
             _stub->hasElement(17))
         ,
-        getProfilesAttributeStubDispatcher(
-            &::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub::lockProfilesAttribute,
-            &::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub::getProfilesAttribute,
+        getPsimNetworkAttributeStubDispatcher(
+            &::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub::lockPsimNetworkAttribute,
+            &::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub::getPsimNetworkAttribute,
             false,
-            _stub->hasElement(18))
-        ,
-        getPukRetriesAttributeStubDispatcher(
-            &::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub::lockPukRetriesAttribute,
-            &::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub::getPukRetriesAttribute,
-            false,
-            _stub->hasElement(19))
+            _stub->hasElement(18), &::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelector_::psimNetworkDeployment)
         ,
         changePinStubDispatcher(
             &SimProfileSelectorStub::changePin,
@@ -383,12 +363,12 @@ public:
             std::make_tuple(static_cast< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::ModifyPinResultDeployment_t* >(nullptr)))
         
         ,
-        configureProfileHotspotStubDispatcher(
-            &SimProfileSelectorStub::configureProfileHotspot,
+        configureDataConnectionStubDispatcher(
+            &SimProfileSelectorStub::configureDataConnection,
             false,
             _stub->hasElement(2),
             std::make_tuple(static_cast< CommonAPI::SomeIP::StringDeployment* >(nullptr), static_cast< CommonAPI::EmptyDeployment* >(nullptr)),
-            std::make_tuple(static_cast< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::HotspotConfigResultDeployment_t* >(nullptr)))
+            std::make_tuple(static_cast< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::DataConnectionConfigResultDeployment_t* >(nullptr)))
         
         ,
         configureProfileRoamingStubDispatcher(
@@ -480,7 +460,7 @@ public:
          * description: 
          * Standard[en]=WAVE provides an interface to the MGU where it can receive the current network status of the cSIM
          */
-        SimProfileSelectorSomeIPStubAdapterHelper::addStubDispatcher( { CommonAPI::SomeIP::method_id_t(0x8) }, &getCsimNetworkStatusAttributeStubDispatcher );
+        SimProfileSelectorSomeIPStubAdapterHelper::addStubDispatcher( { CommonAPI::SomeIP::method_id_t(0x8) }, &getCsimNetworkAttributeStubDispatcher );
         /*
          * description: 
          * Standard[en]=WAVE provides an interface to the MGU where it can receive the EID of the CSIM
@@ -493,19 +473,15 @@ public:
         SimProfileSelectorSomeIPStubAdapterHelper::addStubDispatcher( { CommonAPI::SomeIP::method_id_t(0x7) }, &getImeiAttributeStubDispatcher );
         /*
          * description: 
-         * Standard[en]=WAVE provides an interface to MGU where it can request he number of PIN retries that the current ICCID has left
-         */
-        SimProfileSelectorSomeIPStubAdapterHelper::addStubDispatcher( { CommonAPI::SomeIP::method_id_t(0xf) }, &getPinRetriesAttributeStubDispatcher );
-        /*
-         * description: 
          * Standard[en]=WAVE provides an interface to the MGU where it can receive a list of the  existing profiles stored in the consumer SIM.
          */
         SimProfileSelectorSomeIPStubAdapterHelper::addStubDispatcher( { CommonAPI::SomeIP::method_id_t(0x5) }, &getProfilesAttributeStubDispatcher );
         /*
          * description: 
-         * Standard[en]=WAVE provides an interface to MGU where it can request the number of PUK retries that the current ICCID has left
+         * Standard[en]=WAVE provides an interface to the MGU where it can receive the current network status of the pSIM
+         * (at)example: 0 - 5
          */
-        SimProfileSelectorSomeIPStubAdapterHelper::addStubDispatcher( { CommonAPI::SomeIP::method_id_t(0x10) }, &getPukRetriesAttributeStubDispatcher );
+        SimProfileSelectorSomeIPStubAdapterHelper::addStubDispatcher( { CommonAPI::SomeIP::method_id_t(0x1a) }, &getPsimNetworkAttributeStubDispatcher );
         /*
          * description: 
          * Standard[en]=WAVE provides an interface to MGU where it can send a request to modify the current PIN used to protect the cSIM profile
@@ -515,7 +491,7 @@ public:
          * description: 
          * Standard[en]=WAVE provides an interface to MGU where it send the information of Hotspot (data connection) status for the currently enabled profile.
          */
-        SimProfileSelectorSomeIPStubAdapterHelper::addStubDispatcher( { CommonAPI::SomeIP::method_id_t(0x17) }, &configureProfileHotspotStubDispatcher );
+        SimProfileSelectorSomeIPStubAdapterHelper::addStubDispatcher( { CommonAPI::SomeIP::method_id_t(0x17) }, &configureDataConnectionStubDispatcher );
         /*
          * description: 
          * Standard[en]=WAVE provides an interface to MGU where it send the information of Roaming status for the currently enabled profile
@@ -579,49 +555,42 @@ public:
             std::set<CommonAPI::SomeIP::eventgroup_id_t> itsEventGroups;
             itsEventGroups.insert(CommonAPI::SomeIP::eventgroup_id_t(CommonAPI::SomeIP::eventgroup_id_t(0x1)));
             CommonAPI::SomeIP::StubAdapter::registerEvent(CommonAPI::SomeIP::event_id_t(0x8009), itsEventGroups, CommonAPI::SomeIP::event_type_e::ET_FIELD, CommonAPI::SomeIP::reliability_type_e::RT_UNRELIABLE);
-            fireCsimMemorySpaceAttributeChanged(std::dynamic_pointer_cast< ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub>(_stub)->getCsimMemorySpaceAttribute(itsClient));
+            fireCsimMemorySpaceAttributeChanged(std::dynamic_pointer_cast< ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub>(_stub)->getCsimMemorySpaceAttribute(itsClient));
         }
 
         if (_stub->hasElement(14)) {
             std::set<CommonAPI::SomeIP::eventgroup_id_t> itsEventGroups;
             itsEventGroups.insert(CommonAPI::SomeIP::eventgroup_id_t(CommonAPI::SomeIP::eventgroup_id_t(0x1)));
             CommonAPI::SomeIP::StubAdapter::registerEvent(CommonAPI::SomeIP::event_id_t(0x8008), itsEventGroups, CommonAPI::SomeIP::event_type_e::ET_FIELD, CommonAPI::SomeIP::reliability_type_e::RT_UNRELIABLE);
-            fireCsimNetworkStatusAttributeChanged(std::dynamic_pointer_cast< ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub>(_stub)->getCsimNetworkStatusAttribute(itsClient));
+            fireCsimNetworkAttributeChanged(std::dynamic_pointer_cast< ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub>(_stub)->getCsimNetworkAttribute(itsClient));
         }
 
         if (_stub->hasElement(15)) {
             std::set<CommonAPI::SomeIP::eventgroup_id_t> itsEventGroups;
             itsEventGroups.insert(CommonAPI::SomeIP::eventgroup_id_t(CommonAPI::SomeIP::eventgroup_id_t(0x1)));
             CommonAPI::SomeIP::StubAdapter::registerEvent(CommonAPI::SomeIP::event_id_t(0x8006), itsEventGroups, CommonAPI::SomeIP::event_type_e::ET_FIELD, CommonAPI::SomeIP::reliability_type_e::RT_UNRELIABLE);
-            fireEidAttributeChanged(std::dynamic_pointer_cast< ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub>(_stub)->getEidAttribute(itsClient));
+            fireEidAttributeChanged(std::dynamic_pointer_cast< ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub>(_stub)->getEidAttribute(itsClient));
         }
 
         if (_stub->hasElement(16)) {
             std::set<CommonAPI::SomeIP::eventgroup_id_t> itsEventGroups;
             itsEventGroups.insert(CommonAPI::SomeIP::eventgroup_id_t(CommonAPI::SomeIP::eventgroup_id_t(0x1)));
             CommonAPI::SomeIP::StubAdapter::registerEvent(CommonAPI::SomeIP::event_id_t(0x8007), itsEventGroups, CommonAPI::SomeIP::event_type_e::ET_FIELD, CommonAPI::SomeIP::reliability_type_e::RT_UNRELIABLE);
-            fireImeiAttributeChanged(std::dynamic_pointer_cast< ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub>(_stub)->getImeiAttribute(itsClient));
+            fireImeiAttributeChanged(std::dynamic_pointer_cast< ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub>(_stub)->getImeiAttribute(itsClient));
         }
 
         if (_stub->hasElement(17)) {
             std::set<CommonAPI::SomeIP::eventgroup_id_t> itsEventGroups;
             itsEventGroups.insert(CommonAPI::SomeIP::eventgroup_id_t(CommonAPI::SomeIP::eventgroup_id_t(0x1)));
-            CommonAPI::SomeIP::StubAdapter::registerEvent(CommonAPI::SomeIP::event_id_t(0x800f), itsEventGroups, CommonAPI::SomeIP::event_type_e::ET_FIELD, CommonAPI::SomeIP::reliability_type_e::RT_UNRELIABLE);
-            firePinRetriesAttributeChanged(std::dynamic_pointer_cast< ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub>(_stub)->getPinRetriesAttribute(itsClient));
+            CommonAPI::SomeIP::StubAdapter::registerEvent(CommonAPI::SomeIP::event_id_t(0x8005), itsEventGroups, CommonAPI::SomeIP::event_type_e::ET_FIELD, CommonAPI::SomeIP::reliability_type_e::RT_UNRELIABLE);
+            fireProfilesAttributeChanged(std::dynamic_pointer_cast< ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub>(_stub)->getProfilesAttribute(itsClient));
         }
 
         if (_stub->hasElement(18)) {
             std::set<CommonAPI::SomeIP::eventgroup_id_t> itsEventGroups;
             itsEventGroups.insert(CommonAPI::SomeIP::eventgroup_id_t(CommonAPI::SomeIP::eventgroup_id_t(0x1)));
-            CommonAPI::SomeIP::StubAdapter::registerEvent(CommonAPI::SomeIP::event_id_t(0x8005), itsEventGroups, CommonAPI::SomeIP::event_type_e::ET_FIELD, CommonAPI::SomeIP::reliability_type_e::RT_UNRELIABLE);
-            fireProfilesAttributeChanged(std::dynamic_pointer_cast< ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub>(_stub)->getProfilesAttribute(itsClient));
-        }
-
-        if (_stub->hasElement(19)) {
-            std::set<CommonAPI::SomeIP::eventgroup_id_t> itsEventGroups;
-            itsEventGroups.insert(CommonAPI::SomeIP::eventgroup_id_t(CommonAPI::SomeIP::eventgroup_id_t(0x1)));
-            CommonAPI::SomeIP::StubAdapter::registerEvent(CommonAPI::SomeIP::event_id_t(0x8010), itsEventGroups, CommonAPI::SomeIP::event_type_e::ET_FIELD, CommonAPI::SomeIP::reliability_type_e::RT_UNRELIABLE);
-            firePukRetriesAttributeChanged(std::dynamic_pointer_cast< ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub>(_stub)->getPukRetriesAttribute(itsClient));
+            CommonAPI::SomeIP::StubAdapter::registerEvent(CommonAPI::SomeIP::event_id_t(0x801a), itsEventGroups, CommonAPI::SomeIP::event_type_e::ET_FIELD, CommonAPI::SomeIP::reliability_type_e::RT_UNRELIABLE);
+            firePsimNetworkAttributeChanged(std::dynamic_pointer_cast< ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub>(_stub)->getPsimNetworkAttribute(itsClient));
         }
 
     }
@@ -659,8 +628,8 @@ void SimProfileSelectorSomeIPStubAdapterInternal<_Stub, _Stubs...>::fireCsimMemo
  * Standard[en]=WAVE provides an interface to the MGU where it can receive the current network status of the cSIM
  */
 template <typename _Stub, typename... _Stubs>
-void SimProfileSelectorSomeIPStubAdapterInternal<_Stub, _Stubs...>::fireCsimNetworkStatusAttributeChanged(const std::string &_value) {
-    CommonAPI::Deployable< std::string, CommonAPI::SomeIP::StringDeployment> deployedValue(_value, &::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelector_::csimNetworkStatusDeployment);
+void SimProfileSelectorSomeIPStubAdapterInternal<_Stub, _Stubs...>::fireCsimNetworkAttributeChanged(const std::string &_value) {
+    CommonAPI::Deployable< std::string, CommonAPI::SomeIP::StringDeployment> deployedValue(_value, &::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelector_::csimNetworkDeployment);
     CommonAPI::SomeIP::StubEventHelper<
         CommonAPI::SomeIP::SerializableArguments<
             CommonAPI::Deployable<
@@ -722,28 +691,6 @@ void SimProfileSelectorSomeIPStubAdapterInternal<_Stub, _Stubs...>::fireImeiAttr
 
 /*
  * description: 
- * Standard[en]=WAVE provides an interface to MGU where it can request he number of PIN retries that the current ICCID has left
- */
-template <typename _Stub, typename... _Stubs>
-void SimProfileSelectorSomeIPStubAdapterInternal<_Stub, _Stubs...>::firePinRetriesAttributeChanged(const uint8_t &_value) {
-    CommonAPI::Deployable< uint8_t, CommonAPI::SomeIP::IntegerDeployment<uint8_t>> deployedValue(_value, static_cast< CommonAPI::SomeIP::IntegerDeployment<uint8_t>* >(nullptr));
-    CommonAPI::SomeIP::StubEventHelper<
-        CommonAPI::SomeIP::SerializableArguments<
-            CommonAPI::Deployable<
-                uint8_t,
-                CommonAPI::SomeIP::IntegerDeployment<uint8_t>
-            >
-            >
-    >::sendEvent(
-        *this,
-        CommonAPI::SomeIP::event_id_t(0x800f),
-        false,
-        deployedValue
-    );
-}
-
-/*
- * description: 
  * Standard[en]=WAVE provides an interface to the MGU where it can receive a list of the  existing profiles stored in the consumer SIM.
  */
 template <typename _Stub, typename... _Stubs>
@@ -766,21 +713,22 @@ void SimProfileSelectorSomeIPStubAdapterInternal<_Stub, _Stubs...>::fireProfiles
 
 /*
  * description: 
- * Standard[en]=WAVE provides an interface to MGU where it can request the number of PUK retries that the current ICCID has left
+ * Standard[en]=WAVE provides an interface to the MGU where it can receive the current network status of the pSIM
+ * (at)example: 0 - 5
  */
 template <typename _Stub, typename... _Stubs>
-void SimProfileSelectorSomeIPStubAdapterInternal<_Stub, _Stubs...>::firePukRetriesAttributeChanged(const uint8_t &_value) {
-    CommonAPI::Deployable< uint8_t, CommonAPI::SomeIP::IntegerDeployment<uint8_t>> deployedValue(_value, static_cast< CommonAPI::SomeIP::IntegerDeployment<uint8_t>* >(nullptr));
+void SimProfileSelectorSomeIPStubAdapterInternal<_Stub, _Stubs...>::firePsimNetworkAttributeChanged(const std::string &_value) {
+    CommonAPI::Deployable< std::string, CommonAPI::SomeIP::StringDeployment> deployedValue(_value, &::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelector_::psimNetworkDeployment);
     CommonAPI::SomeIP::StubEventHelper<
         CommonAPI::SomeIP::SerializableArguments<
             CommonAPI::Deployable<
-                uint8_t,
-                CommonAPI::SomeIP::IntegerDeployment<uint8_t>
+                std::string,
+                CommonAPI::SomeIP::StringDeployment
             >
             >
     >::sendEvent(
         *this,
-        CommonAPI::SomeIP::event_id_t(0x8010),
+        CommonAPI::SomeIP::event_id_t(0x801a),
         false,
         deployedValue
     );
@@ -792,10 +740,12 @@ void SimProfileSelectorSomeIPStubAdapterInternal<_Stub, _Stubs...>::firePukRetri
  * SPP subscribes to this broadcast after sending an activation code to start the download process
  */
 template <typename _Stub, typename... _Stubs>
-void SimProfileSelectorSomeIPStubAdapterInternal<_Stub, _Stubs...>::fireDownloadAndInstallResultEvent(const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid &_iccid, const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::InstallationResult &_installationresult) {
+void SimProfileSelectorSomeIPStubAdapterInternal<_Stub, _Stubs...>::fireDownloadAndInstallResultEvent(const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid &_iccid, const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::ActivationCode &_activationCode, const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::InstallationResult &_installationresult) {
     CommonAPI::Deployable< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid, CommonAPI::SomeIP::StringDeployment> deployed_iccid(_iccid, static_cast< CommonAPI::SomeIP::StringDeployment* >(nullptr));
-    CommonAPI::Deployable< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::InstallationResult, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::InstallationResultDeployment_t> deployed_installationresult(_installationresult, static_cast< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::InstallationResultDeployment_t* >(nullptr));
+    CommonAPI::Deployable< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::ActivationCode, CommonAPI::SomeIP::StringDeployment> deployed_activationCode(_activationCode, static_cast< CommonAPI::SomeIP::StringDeployment* >(nullptr));
+    CommonAPI::Deployable< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::InstallationResult, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::InstallationResultDeployment_t> deployed_installationresult(_installationresult, &::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::InstallationResultDeployment);
     CommonAPI::SomeIP::StubEventHelper<CommonAPI::SomeIP::SerializableArguments<  CommonAPI::Deployable< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid, CommonAPI::SomeIP::StringDeployment > 
+    ,  CommonAPI::Deployable< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::ActivationCode, CommonAPI::SomeIP::StringDeployment > 
     ,  CommonAPI::Deployable< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::InstallationResult, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::InstallationResultDeployment_t > 
     >>
         ::sendEvent(
@@ -803,6 +753,7 @@ void SimProfileSelectorSomeIPStubAdapterInternal<_Stub, _Stubs...>::fireDownload
             CommonAPI::SomeIP::event_id_t(0x8011),
             false,
              deployed_iccid 
+            ,  deployed_activationCode 
             ,  deployed_installationresult 
     );
 }
@@ -818,7 +769,7 @@ void SimProfileSelectorSomeIPStubAdapterInternal<_Stub, _Stubs...>::unregisterSe
 
 }
 
-template <typename _Stub = ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub, typename... _Stubs>
+template <typename _Stub = ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorStub, typename... _Stubs>
 class SimProfileSelectorSomeIPStubAdapter
     : public SimProfileSelectorSomeIPStubAdapterInternal<_Stub, _Stubs...> {
 public:
@@ -835,6 +786,6 @@ public:
 } // namespace infotainment
 } // namespace bmw
 } // namespace de
-} // namespace v2
+} // namespace v3
 
-#endif // V2_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_SOMEIP_STUB_ADAPTER_HPP_
+#endif // V3_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_SOMEIP_STUB_ADAPTER_HPP_

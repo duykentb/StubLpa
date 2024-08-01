@@ -7,13 +7,13 @@
 * If a copy of the MPL was not distributed with this file, You can obtain one at
 * http://mozilla.org/MPL/2.0/.
 */
-#ifndef V2_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_STUB_DEFAULT_HPP_
-#define V2_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_STUB_DEFAULT_HPP_
+#ifndef V3_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_STUB_DEFAULT_HPP_
+#define V3_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_STUB_DEFAULT_HPP_
 
 
 #include <CommonAPI/Export.hpp>
 
-#include <v2/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelectorStub.hpp>
+#include <v3/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelectorStub.hpp>
 #include <cassert>
 #include <sstream>
 
@@ -29,7 +29,7 @@
 #  endif
 # endif
 
-namespace v2 {
+namespace v3 {
 namespace de {
 namespace bmw {
 namespace infotainment {
@@ -69,8 +69,8 @@ public:
      * Standard[en]=WAVE broadcasts the result of the download and installation the consumer SIM profile started with the sendActivationCode method
      * SPP subscribes to this broadcast after sending an activation code to start the download process
      */
-    COMMONAPI_EXPORT virtual void fireDownloadAndInstallResultEvent(const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid &_iccid, const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::InstallationResult &_installationresult) {
-        SimProfileSelectorStub::fireDownloadAndInstallResultEvent(_iccid, _installationresult);
+    COMMONAPI_EXPORT virtual void fireDownloadAndInstallResultEvent(const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid &_iccid, const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::ActivationCode &_activationCode, const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::InstallationResult &_installationresult) {
+        SimProfileSelectorStub::fireDownloadAndInstallResultEvent(_iccid, _activationCode, _installationresult);
     }
     /*
      * description: 
@@ -88,12 +88,12 @@ public:
      * description: 
      * Standard[en]=WAVE provides an interface to MGU where it send the information of Hotspot (data connection) status for the currently enabled profile.
      */
-    COMMONAPI_EXPORT virtual void configureProfileHotspot(const std::shared_ptr<CommonAPI::ClientId> _client, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid _iccid, bool _hotspotActive, configureProfileHotspotReply_t _reply) {
+    COMMONAPI_EXPORT virtual void configureDataConnection(const std::shared_ptr<CommonAPI::ClientId> _client, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid _iccid, bool _hotspotActive, configureDataConnectionReply_t _reply) {
         (void)_client;
         (void)_iccid;
         (void)_hotspotActive;
-        ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::HotspotConfigResult hospotconfig = {};
-        _reply(hospotconfig);
+        ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::DataConnectionConfigResult dataConfig = {};
+        _reply(dataConfig);
     }
     /*
      * description: 
@@ -216,17 +216,17 @@ public:
             fireCsimMemorySpaceAttributeChanged(csimMemorySpaceAttributeValue_);
         }
     }
-    COMMONAPI_EXPORT virtual const std::string &getCsimNetworkStatusAttribute() {
-        return csimNetworkStatusAttributeValue_;
+    COMMONAPI_EXPORT virtual const std::string &getCsimNetworkAttribute() {
+        return csimNetworkAttributeValue_;
     }
-    COMMONAPI_EXPORT virtual const std::string &getCsimNetworkStatusAttribute(const std::shared_ptr<CommonAPI::ClientId> _client) {
+    COMMONAPI_EXPORT virtual const std::string &getCsimNetworkAttribute(const std::shared_ptr<CommonAPI::ClientId> _client) {
         (void)_client;
-        return getCsimNetworkStatusAttribute();
+        return getCsimNetworkAttribute();
     }
-    COMMONAPI_EXPORT virtual void setCsimNetworkStatusAttribute(std::string _value) {
-        const bool valueChanged = trySetCsimNetworkStatusAttribute(std::move(_value));
+    COMMONAPI_EXPORT virtual void setCsimNetworkAttribute(std::string _value) {
+        const bool valueChanged = trySetCsimNetworkAttribute(std::move(_value));
         if (valueChanged) {
-            fireCsimNetworkStatusAttributeChanged(csimNetworkStatusAttributeValue_);
+            fireCsimNetworkAttributeChanged(csimNetworkAttributeValue_);
         }
     }
     COMMONAPI_EXPORT virtual const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Eid &getEidAttribute() {
@@ -255,19 +255,6 @@ public:
             fireImeiAttributeChanged(imeiAttributeValue_);
         }
     }
-    COMMONAPI_EXPORT virtual const uint8_t &getPinRetriesAttribute() {
-        return pinRetriesAttributeValue_;
-    }
-    COMMONAPI_EXPORT virtual const uint8_t &getPinRetriesAttribute(const std::shared_ptr<CommonAPI::ClientId> _client) {
-        (void)_client;
-        return getPinRetriesAttribute();
-    }
-    COMMONAPI_EXPORT virtual void setPinRetriesAttribute(uint8_t _value) {
-        const bool valueChanged = trySetPinRetriesAttribute(std::move(_value));
-        if (valueChanged) {
-            firePinRetriesAttributeChanged(pinRetriesAttributeValue_);
-        }
-    }
     COMMONAPI_EXPORT virtual const std::vector< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::CSimProfile > &getProfilesAttribute() {
         return profilesAttributeValue_;
     }
@@ -281,17 +268,17 @@ public:
             fireProfilesAttributeChanged(profilesAttributeValue_);
         }
     }
-    COMMONAPI_EXPORT virtual const uint8_t &getPukRetriesAttribute() {
-        return pukRetriesAttributeValue_;
+    COMMONAPI_EXPORT virtual const std::string &getPsimNetworkAttribute() {
+        return psimNetworkAttributeValue_;
     }
-    COMMONAPI_EXPORT virtual const uint8_t &getPukRetriesAttribute(const std::shared_ptr<CommonAPI::ClientId> _client) {
+    COMMONAPI_EXPORT virtual const std::string &getPsimNetworkAttribute(const std::shared_ptr<CommonAPI::ClientId> _client) {
         (void)_client;
-        return getPukRetriesAttribute();
+        return getPsimNetworkAttribute();
     }
-    COMMONAPI_EXPORT virtual void setPukRetriesAttribute(uint8_t _value) {
-        const bool valueChanged = trySetPukRetriesAttribute(std::move(_value));
+    COMMONAPI_EXPORT virtual void setPsimNetworkAttribute(std::string _value) {
+        const bool valueChanged = trySetPsimNetworkAttribute(std::move(_value));
         if (valueChanged) {
-            firePukRetriesAttributeChanged(pukRetriesAttributeValue_);
+            firePsimNetworkAttributeChanged(psimNetworkAttributeValue_);
         }
     }
 
@@ -327,25 +314,25 @@ protected:
      * description: 
      * Standard[en]=WAVE provides an interface to the MGU where it can receive the current network status of the cSIM
      */
-    COMMONAPI_EXPORT virtual bool trySetCsimNetworkStatusAttribute(std::string _value) {
-        if (!validateCsimNetworkStatusAttributeRequestedValue(_value))
+    COMMONAPI_EXPORT virtual bool trySetCsimNetworkAttribute(std::string _value) {
+        if (!validateCsimNetworkAttributeRequestedValue(_value))
             return false;
 
         bool valueChanged;
         std::shared_ptr<SimProfileSelectorStubAdapter> stubAdapter = CommonAPI::Stub<SimProfileSelectorStubAdapter, SimProfileSelectorStubRemoteEvent>::stubAdapter_.lock();
         if(stubAdapter) {
-            stubAdapter->lockCsimNetworkStatusAttribute(true);
-            valueChanged = (csimNetworkStatusAttributeValue_ != _value);
-            csimNetworkStatusAttributeValue_ = std::move(_value);
-            stubAdapter->lockCsimNetworkStatusAttribute(false);
+            stubAdapter->lockCsimNetworkAttribute(true);
+            valueChanged = (csimNetworkAttributeValue_ != _value);
+            csimNetworkAttributeValue_ = std::move(_value);
+            stubAdapter->lockCsimNetworkAttribute(false);
         } else {
-            valueChanged = (csimNetworkStatusAttributeValue_ != _value);
-            csimNetworkStatusAttributeValue_ = std::move(_value);
+            valueChanged = (csimNetworkAttributeValue_ != _value);
+            csimNetworkAttributeValue_ = std::move(_value);
         }
 
        return valueChanged;
     }
-    COMMONAPI_EXPORT virtual bool validateCsimNetworkStatusAttributeRequestedValue(const std::string &_value) {
+    COMMONAPI_EXPORT virtual bool validateCsimNetworkAttributeRequestedValue(const std::string &_value) {
         (void)_value;
         return true;
     }
@@ -403,32 +390,6 @@ protected:
     }
     /*
      * description: 
-     * Standard[en]=WAVE provides an interface to MGU where it can request he number of PIN retries that the current ICCID has left
-     */
-    COMMONAPI_EXPORT virtual bool trySetPinRetriesAttribute(uint8_t _value) {
-        if (!validatePinRetriesAttributeRequestedValue(_value))
-            return false;
-
-        bool valueChanged;
-        std::shared_ptr<SimProfileSelectorStubAdapter> stubAdapter = CommonAPI::Stub<SimProfileSelectorStubAdapter, SimProfileSelectorStubRemoteEvent>::stubAdapter_.lock();
-        if(stubAdapter) {
-            stubAdapter->lockPinRetriesAttribute(true);
-            valueChanged = (pinRetriesAttributeValue_ != _value);
-            pinRetriesAttributeValue_ = std::move(_value);
-            stubAdapter->lockPinRetriesAttribute(false);
-        } else {
-            valueChanged = (pinRetriesAttributeValue_ != _value);
-            pinRetriesAttributeValue_ = std::move(_value);
-        }
-
-       return valueChanged;
-    }
-    COMMONAPI_EXPORT virtual bool validatePinRetriesAttributeRequestedValue(const uint8_t &_value) {
-        (void)_value;
-        return true;
-    }
-    /*
-     * description: 
      * Standard[en]=WAVE provides an interface to the MGU where it can receive a list of the  existing profiles stored in the consumer SIM.
      */
     COMMONAPI_EXPORT virtual bool trySetProfilesAttribute(std::vector< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::CSimProfile > _value) {
@@ -455,27 +416,28 @@ protected:
     }
     /*
      * description: 
-     * Standard[en]=WAVE provides an interface to MGU where it can request the number of PUK retries that the current ICCID has left
+     * Standard[en]=WAVE provides an interface to the MGU where it can receive the current network status of the pSIM
+     * (at)example: 0 - 5
      */
-    COMMONAPI_EXPORT virtual bool trySetPukRetriesAttribute(uint8_t _value) {
-        if (!validatePukRetriesAttributeRequestedValue(_value))
+    COMMONAPI_EXPORT virtual bool trySetPsimNetworkAttribute(std::string _value) {
+        if (!validatePsimNetworkAttributeRequestedValue(_value))
             return false;
 
         bool valueChanged;
         std::shared_ptr<SimProfileSelectorStubAdapter> stubAdapter = CommonAPI::Stub<SimProfileSelectorStubAdapter, SimProfileSelectorStubRemoteEvent>::stubAdapter_.lock();
         if(stubAdapter) {
-            stubAdapter->lockPukRetriesAttribute(true);
-            valueChanged = (pukRetriesAttributeValue_ != _value);
-            pukRetriesAttributeValue_ = std::move(_value);
-            stubAdapter->lockPukRetriesAttribute(false);
+            stubAdapter->lockPsimNetworkAttribute(true);
+            valueChanged = (psimNetworkAttributeValue_ != _value);
+            psimNetworkAttributeValue_ = std::move(_value);
+            stubAdapter->lockPsimNetworkAttribute(false);
         } else {
-            valueChanged = (pukRetriesAttributeValue_ != _value);
-            pukRetriesAttributeValue_ = std::move(_value);
+            valueChanged = (psimNetworkAttributeValue_ != _value);
+            psimNetworkAttributeValue_ = std::move(_value);
         }
 
        return valueChanged;
     }
-    COMMONAPI_EXPORT virtual bool validatePukRetriesAttributeRequestedValue(const uint8_t &_value) {
+    COMMONAPI_EXPORT virtual bool validatePsimNetworkAttributeRequestedValue(const std::string &_value) {
         (void)_value;
         return true;
     }
@@ -504,15 +466,12 @@ protected:
          */
         /*
          * description: 
-         * Standard[en]=WAVE provides an interface to MGU where it can request he number of PIN retries that the current ICCID has left
-         */
-        /*
-         * description: 
          * Standard[en]=WAVE provides an interface to the MGU where it can receive a list of the  existing profiles stored in the consumer SIM.
          */
         /*
          * description: 
-         * Standard[en]=WAVE provides an interface to MGU where it can request the number of PUK retries that the current ICCID has left
+         * Standard[en]=WAVE provides an interface to the MGU where it can receive the current network status of the pSIM
+         * (at)example: 0 - 5
          */
 
     private:
@@ -532,7 +491,7 @@ private:
      * description: 
      * Standard[en]=WAVE provides an interface to the MGU where it can receive the current network status of the cSIM
      */
-    std::string csimNetworkStatusAttributeValue_ {};
+    std::string csimNetworkAttributeValue_ {};
     /*
      * description: 
      * Standard[en]=WAVE provides an interface to the MGU where it can receive the EID of the CSIM
@@ -545,19 +504,15 @@ private:
     ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Imei imeiAttributeValue_ {};
     /*
      * description: 
-     * Standard[en]=WAVE provides an interface to MGU where it can request he number of PIN retries that the current ICCID has left
-     */
-    uint8_t pinRetriesAttributeValue_ {};
-    /*
-     * description: 
      * Standard[en]=WAVE provides an interface to the MGU where it can receive a list of the  existing profiles stored in the consumer SIM.
      */
     std::vector< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::CSimProfile > profilesAttributeValue_ {};
     /*
      * description: 
-     * Standard[en]=WAVE provides an interface to MGU where it can request the number of PUK retries that the current ICCID has left
+     * Standard[en]=WAVE provides an interface to the MGU where it can receive the current network status of the pSIM
+     * (at)example: 0 - 5
      */
-    uint8_t pukRetriesAttributeValue_ {};
+    std::string psimNetworkAttributeValue_ {};
 
     CommonAPI::Version interfaceVersion_;
 };
@@ -567,10 +522,10 @@ private:
 } // namespace infotainment
 } // namespace bmw
 } // namespace de
-} // namespace v2
+} // namespace v3
 
 
 // Compatibility
-namespace v2_0 = v2;
+namespace v3_0 = v3;
 
-#endif // V2_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_STUB_DEFAULT
+#endif // V3_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_STUB_DEFAULT

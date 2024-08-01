@@ -7,10 +7,10 @@
 * If a copy of the MPL was not distributed with this file, You can obtain one at
 * http://mozilla.org/MPL/2.0/.
 */
-#ifndef V2_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_PROXY_HPP_
-#define V2_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_PROXY_HPP_
+#ifndef V3_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_PROXY_HPP_
+#define V3_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_PROXY_HPP_
 
-#include <v2/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelectorProxyBase.hpp>
+#include <v3/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelectorProxyBase.hpp>
 
 
 #if !defined (COMMONAPI_INTERNAL_COMPILATION)
@@ -26,7 +26,7 @@
 #undef HAS_DEFINED_COMMONAPI_INTERNAL_COMPILATION_HERE
 #endif
 
-namespace v2 {
+namespace v3 {
 namespace de {
 namespace bmw {
 namespace infotainment {
@@ -42,7 +42,7 @@ public:
     SimProfileSelectorProxy(std::shared_ptr<CommonAPI::Proxy> delegate);
     ~SimProfileSelectorProxy();
 
-    typedef ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelector InterfaceType;
+    typedef ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelector InterfaceType;
 
 
     /**
@@ -111,7 +111,7 @@ public:
     /**
      * description: 
      * Standard[en]=WAVE provides an interface to MGU where it send the information of Hotspot (data connection) status for the currently enabled profile.
-     * Calls configureProfileHotspot with synchronous semantics.
+     * Calls configureDataConnection with synchronous semantics.
      *
      * All const parameters are input parameters to this method.
      * All non-const parameters will be filled with the returned values.
@@ -119,9 +119,9 @@ public:
      * "SUCCESS" or which type of error has occurred. In case of an error, ONLY the CallStatus
      * will be set.
      */
-    virtual void configureProfileHotspot(::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid _iccid, bool _hotspotActive, CommonAPI::CallStatus &_internalCallStatus, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::HotspotConfigResult &_hospotconfig, const CommonAPI::CallInfo *_info = nullptr);
+    virtual void configureDataConnection(::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid _iccid, bool _hotspotActive, CommonAPI::CallStatus &_internalCallStatus, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::DataConnectionConfigResult &_dataConfig, const CommonAPI::CallInfo *_info = nullptr);
     /**
-     * Calls configureProfileHotspot with asynchronous semantics.
+     * Calls configureDataConnection with asynchronous semantics.
      *
      * The provided callback will be called when the reply to this call arrives or
      * an error occurs during the call. The CallStatus will indicate either "SUCCESS"
@@ -130,7 +130,7 @@ public:
      * The std::future returned by this method will be fulfilled at arrival of the reply.
      * It will provide the same value for CallStatus as will be handed to the callback.
      */
-    virtual std::future<CommonAPI::CallStatus> configureProfileHotspotAsync(const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid &_iccid, const bool &_hotspotActive, ConfigureProfileHotspotAsyncCallback _callback = nullptr, const CommonAPI::CallInfo *_info = nullptr);
+    virtual std::future<CommonAPI::CallStatus> configureDataConnectionAsync(const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid &_iccid, const bool &_hotspotActive, ConfigureDataConnectionAsyncCallback _callback = nullptr, const CommonAPI::CallInfo *_info = nullptr);
     /**
      * description: 
      * Standard[en]=WAVE provides an interface to MGU where it send the information of Roaming status for the currently enabled profile
@@ -376,10 +376,10 @@ public:
      * Standard[en]=WAVE provides an interface to the MGU where it can receive the current network status of the cSIM
      */
     /**
-     * Returns the wrapper class that provides access to the attribute csimNetworkStatus.
+     * Returns the wrapper class that provides access to the attribute csimNetwork.
      */
-    virtual CsimNetworkStatusAttribute& getCsimNetworkStatusAttribute() {
-        return delegate_->getCsimNetworkStatusAttribute();
+    virtual CsimNetworkAttribute& getCsimNetworkAttribute() {
+        return delegate_->getCsimNetworkAttribute();
     }
     /*
      * description: 
@@ -403,16 +403,6 @@ public:
     }
     /*
      * description: 
-     * Standard[en]=WAVE provides an interface to MGU where it can request he number of PIN retries that the current ICCID has left
-     */
-    /**
-     * Returns the wrapper class that provides access to the attribute pinRetries.
-     */
-    virtual PinRetriesAttribute& getPinRetriesAttribute() {
-        return delegate_->getPinRetriesAttribute();
-    }
-    /*
-     * description: 
      * Standard[en]=WAVE provides an interface to the MGU where it can receive a list of the  existing profiles stored in the consumer SIM.
      */
     /**
@@ -423,13 +413,14 @@ public:
     }
     /*
      * description: 
-     * Standard[en]=WAVE provides an interface to MGU where it can request the number of PUK retries that the current ICCID has left
+     * Standard[en]=WAVE provides an interface to the MGU where it can receive the current network status of the pSIM
+     * (at)example: 0 - 5
      */
     /**
-     * Returns the wrapper class that provides access to the attribute pukRetries.
+     * Returns the wrapper class that provides access to the attribute psimNetwork.
      */
-    virtual PukRetriesAttribute& getPukRetriesAttribute() {
-        return delegate_->getPukRetriesAttribute();
+    virtual PsimNetworkAttribute& getPsimNetworkAttribute() {
+        return delegate_->getPsimNetworkAttribute();
     }
 
 
@@ -469,17 +460,17 @@ namespace SimProfileSelectorExtensions {
      * Standard[en]=WAVE provides an interface to the MGU where it can receive the current network status of the cSIM
      */
     template <template <typename > class _ExtensionType>
-    class CsimNetworkStatusAttributeExtension {
+    class CsimNetworkAttributeExtension {
      public:
-        typedef _ExtensionType< SimProfileSelectorProxyBase::CsimNetworkStatusAttribute> extension_type;
+        typedef _ExtensionType< SimProfileSelectorProxyBase::CsimNetworkAttribute> extension_type;
     
-        static_assert(std::is_base_of<typename CommonAPI::AttributeExtension< SimProfileSelectorProxyBase::CsimNetworkStatusAttribute>, extension_type>::value,
+        static_assert(std::is_base_of<typename CommonAPI::AttributeExtension< SimProfileSelectorProxyBase::CsimNetworkAttribute>, extension_type>::value,
                       "Not CommonAPI Attribute Extension!");
     
-        CsimNetworkStatusAttributeExtension(SimProfileSelectorProxyBase& proxy): attributeExtension_(proxy.getCsimNetworkStatusAttribute()) {
+        CsimNetworkAttributeExtension(SimProfileSelectorProxyBase& proxy): attributeExtension_(proxy.getCsimNetworkAttribute()) {
         }
     
-        inline extension_type& getCsimNetworkStatusAttributeExtension() {
+        inline extension_type& getCsimNetworkAttributeExtension() {
             return attributeExtension_;
         }
     
@@ -535,29 +526,6 @@ namespace SimProfileSelectorExtensions {
 
     /*
      * description: 
-     * Standard[en]=WAVE provides an interface to MGU where it can request he number of PIN retries that the current ICCID has left
-     */
-    template <template <typename > class _ExtensionType>
-    class PinRetriesAttributeExtension {
-     public:
-        typedef _ExtensionType< SimProfileSelectorProxyBase::PinRetriesAttribute> extension_type;
-    
-        static_assert(std::is_base_of<typename CommonAPI::AttributeExtension< SimProfileSelectorProxyBase::PinRetriesAttribute>, extension_type>::value,
-                      "Not CommonAPI Attribute Extension!");
-    
-        PinRetriesAttributeExtension(SimProfileSelectorProxyBase& proxy): attributeExtension_(proxy.getPinRetriesAttribute()) {
-        }
-    
-        inline extension_type& getPinRetriesAttributeExtension() {
-            return attributeExtension_;
-        }
-    
-     private:
-        extension_type attributeExtension_;
-    };
-
-    /*
-     * description: 
      * Standard[en]=WAVE provides an interface to the MGU where it can receive a list of the  existing profiles stored in the consumer SIM.
      */
     template <template <typename > class _ExtensionType>
@@ -581,20 +549,21 @@ namespace SimProfileSelectorExtensions {
 
     /*
      * description: 
-     * Standard[en]=WAVE provides an interface to MGU where it can request the number of PUK retries that the current ICCID has left
+     * Standard[en]=WAVE provides an interface to the MGU where it can receive the current network status of the pSIM
+     * (at)example: 0 - 5
      */
     template <template <typename > class _ExtensionType>
-    class PukRetriesAttributeExtension {
+    class PsimNetworkAttributeExtension {
      public:
-        typedef _ExtensionType< SimProfileSelectorProxyBase::PukRetriesAttribute> extension_type;
+        typedef _ExtensionType< SimProfileSelectorProxyBase::PsimNetworkAttribute> extension_type;
     
-        static_assert(std::is_base_of<typename CommonAPI::AttributeExtension< SimProfileSelectorProxyBase::PukRetriesAttribute>, extension_type>::value,
+        static_assert(std::is_base_of<typename CommonAPI::AttributeExtension< SimProfileSelectorProxyBase::PsimNetworkAttribute>, extension_type>::value,
                       "Not CommonAPI Attribute Extension!");
     
-        PukRetriesAttributeExtension(SimProfileSelectorProxyBase& proxy): attributeExtension_(proxy.getPukRetriesAttribute()) {
+        PsimNetworkAttributeExtension(SimProfileSelectorProxyBase& proxy): attributeExtension_(proxy.getPsimNetworkAttribute()) {
         }
     
-        inline extension_type& getPukRetriesAttributeExtension() {
+        inline extension_type& getPsimNetworkAttributeExtension() {
             return attributeExtension_;
         }
     
@@ -635,13 +604,13 @@ std::future<CommonAPI::CallStatus> SimProfileSelectorProxy<_AttributeExtensions.
  * Standard[en]=WAVE provides an interface to MGU where it send the information of Hotspot (data connection) status for the currently enabled profile.
  */
 template <typename ... _AttributeExtensions>
-void SimProfileSelectorProxy<_AttributeExtensions...>::configureProfileHotspot(::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid _iccid, bool _hotspotActive, CommonAPI::CallStatus &_internalCallStatus, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::HotspotConfigResult &_hospotconfig, const CommonAPI::CallInfo *_info) {
-    delegate_->configureProfileHotspot(_iccid, _hotspotActive, _internalCallStatus, _hospotconfig, _info);
+void SimProfileSelectorProxy<_AttributeExtensions...>::configureDataConnection(::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid _iccid, bool _hotspotActive, CommonAPI::CallStatus &_internalCallStatus, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::DataConnectionConfigResult &_dataConfig, const CommonAPI::CallInfo *_info) {
+    delegate_->configureDataConnection(_iccid, _hotspotActive, _internalCallStatus, _dataConfig, _info);
 }
 
 template <typename ... _AttributeExtensions>
-std::future<CommonAPI::CallStatus> SimProfileSelectorProxy<_AttributeExtensions...>::configureProfileHotspotAsync(const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid &_iccid, const bool &_hotspotActive, ConfigureProfileHotspotAsyncCallback _callback, const CommonAPI::CallInfo *_info) {
-    return delegate_->configureProfileHotspotAsync(_iccid, _hotspotActive, _callback, _info);
+std::future<CommonAPI::CallStatus> SimProfileSelectorProxy<_AttributeExtensions...>::configureDataConnectionAsync(const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid &_iccid, const bool &_hotspotActive, ConfigureDataConnectionAsyncCallback _callback, const CommonAPI::CallInfo *_info) {
+    return delegate_->configureDataConnectionAsync(_iccid, _hotspotActive, _callback, _info);
 }
 /*
  * description: 
@@ -811,26 +780,25 @@ std::future<void> SimProfileSelectorProxy<_AttributeExtensions...>::getCompletio
 } // namespace infotainment
 } // namespace bmw
 } // namespace de
-} // namespace v2
+} // namespace v3
 
 namespace CommonAPI {
 template<template<typename > class _AttributeExtension>
-struct DefaultAttributeProxyHelper< ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorProxy,
+struct DefaultAttributeProxyHelper< ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorProxy,
     _AttributeExtension> {
-    typedef typename ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorProxy<
-            ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorExtensions::CsimMemorySpaceAttributeExtension<_AttributeExtension>, 
-            ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorExtensions::CsimNetworkStatusAttributeExtension<_AttributeExtension>, 
-            ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorExtensions::EidAttributeExtension<_AttributeExtension>, 
-            ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorExtensions::ImeiAttributeExtension<_AttributeExtension>, 
-            ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorExtensions::PinRetriesAttributeExtension<_AttributeExtension>, 
-            ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorExtensions::ProfilesAttributeExtension<_AttributeExtension>, 
-            ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorExtensions::PukRetriesAttributeExtension<_AttributeExtension>
+    typedef typename ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorProxy<
+            ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorExtensions::CsimMemorySpaceAttributeExtension<_AttributeExtension>, 
+            ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorExtensions::CsimNetworkAttributeExtension<_AttributeExtension>, 
+            ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorExtensions::EidAttributeExtension<_AttributeExtension>, 
+            ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorExtensions::ImeiAttributeExtension<_AttributeExtension>, 
+            ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorExtensions::ProfilesAttributeExtension<_AttributeExtension>, 
+            ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelectorExtensions::PsimNetworkAttributeExtension<_AttributeExtension>
     > class_t;
 };
 }
 
 
 // Compatibility
-namespace v2_0 = v2;
+namespace v3_0 = v3;
 
-#endif // V2_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_PROXY_HPP_
+#endif // V3_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_PROXY_HPP_

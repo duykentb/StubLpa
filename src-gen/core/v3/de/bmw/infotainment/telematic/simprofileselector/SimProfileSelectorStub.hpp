@@ -7,8 +7,8 @@
 * If a copy of the MPL was not distributed with this file, You can obtain one at
 * http://mozilla.org/MPL/2.0/.
 */
-#ifndef V2_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_STUB_HPP_
-#define V2_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_STUB_HPP_
+#ifndef V3_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_STUB_HPP_
+#define V3_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_STUB_HPP_
 
 #include <functional>
 #include <sstream>
@@ -17,7 +17,7 @@
 
 #include <de/bmw/infotainment/telematic/simprofileselectortypes/SimProfileSelectorTypes.hpp>
 
-#include <v2/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelector.hpp>
+#include <v3/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelector.hpp>
 
 #if !defined (COMMONAPI_INTERNAL_COMPILATION)
 #define COMMONAPI_INTERNAL_COMPILATION
@@ -42,7 +42,7 @@
 #undef HAS_DEFINED_COMMONAPI_INTERNAL_COMPILATION_HERE
 #endif
 
-namespace v2 {
+namespace v3 {
 namespace de {
 namespace bmw {
 namespace infotainment {
@@ -63,21 +63,19 @@ class SimProfileSelectorStubAdapter
     * Sends a broadcast event for downloadAndInstallResult. Should not be called directly.
     * Instead, the "fire<broadcastName>Event" methods of the stub should be used.
     */
-    virtual void fireDownloadAndInstallResultEvent(const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid &_iccid, const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::InstallationResult &_installationresult) = 0;
+    virtual void fireDownloadAndInstallResultEvent(const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid &_iccid, const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::ActivationCode &_activationCode, const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::InstallationResult &_installationresult) = 0;
     ///Notifies all remote listeners about a change of value of the attribute csimMemorySpace.
     virtual void fireCsimMemorySpaceAttributeChanged(const int64_t &csimMemorySpace) = 0;
-    ///Notifies all remote listeners about a change of value of the attribute csimNetworkStatus.
-    virtual void fireCsimNetworkStatusAttributeChanged(const std::string &csimNetworkStatus) = 0;
+    ///Notifies all remote listeners about a change of value of the attribute csimNetwork.
+    virtual void fireCsimNetworkAttributeChanged(const std::string &csimNetwork) = 0;
     ///Notifies all remote listeners about a change of value of the attribute eid.
     virtual void fireEidAttributeChanged(const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Eid &eid) = 0;
     ///Notifies all remote listeners about a change of value of the attribute imei.
     virtual void fireImeiAttributeChanged(const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Imei &imei) = 0;
-    ///Notifies all remote listeners about a change of value of the attribute pinRetries.
-    virtual void firePinRetriesAttributeChanged(const uint8_t &pinRetries) = 0;
     ///Notifies all remote listeners about a change of value of the attribute profiles.
     virtual void fireProfilesAttributeChanged(const std::vector< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::CSimProfile > &profiles) = 0;
-    ///Notifies all remote listeners about a change of value of the attribute pukRetries.
-    virtual void firePukRetriesAttributeChanged(const uint8_t &pukRetries) = 0;
+    ///Notifies all remote listeners about a change of value of the attribute psimNetwork.
+    virtual void firePsimNetworkAttributeChanged(const std::string &psimNetwork) = 0;
 
 
     virtual void deactivateManagedInstances() = 0;
@@ -89,11 +87,11 @@ class SimProfileSelectorStubAdapter
             csimMemorySpaceMutex_.unlock();
         }
     }
-    void lockCsimNetworkStatusAttribute(bool _lockAccess) {
+    void lockCsimNetworkAttribute(bool _lockAccess) {
         if (_lockAccess) {
-            csimNetworkStatusMutex_.lock();
+            csimNetworkMutex_.lock();
         } else {
-            csimNetworkStatusMutex_.unlock();
+            csimNetworkMutex_.unlock();
         }
     }
     void lockEidAttribute(bool _lockAccess) {
@@ -110,13 +108,6 @@ class SimProfileSelectorStubAdapter
             imeiMutex_.unlock();
         }
     }
-    void lockPinRetriesAttribute(bool _lockAccess) {
-        if (_lockAccess) {
-            pinRetriesMutex_.lock();
-        } else {
-            pinRetriesMutex_.unlock();
-        }
-    }
     void lockProfilesAttribute(bool _lockAccess) {
         if (_lockAccess) {
             profilesMutex_.lock();
@@ -124,11 +115,11 @@ class SimProfileSelectorStubAdapter
             profilesMutex_.unlock();
         }
     }
-    void lockPukRetriesAttribute(bool _lockAccess) {
+    void lockPsimNetworkAttribute(bool _lockAccess) {
         if (_lockAccess) {
-            pukRetriesMutex_.lock();
+            psimNetworkMutex_.lock();
         } else {
-            pukRetriesMutex_.unlock();
+            psimNetworkMutex_.unlock();
         }
     }
 
@@ -138,12 +129,11 @@ protected:
      * subscribed to the selective broadcasts
      */
     std::recursive_mutex csimMemorySpaceMutex_;
-    std::recursive_mutex csimNetworkStatusMutex_;
+    std::recursive_mutex csimNetworkMutex_;
     std::recursive_mutex eidMutex_;
     std::recursive_mutex imeiMutex_;
-    std::recursive_mutex pinRetriesMutex_;
     std::recursive_mutex profilesMutex_;
-    std::recursive_mutex pukRetriesMutex_;
+    std::recursive_mutex psimNetworkMutex_;
 
 };
 
@@ -177,7 +167,7 @@ class SimProfileSelectorStub
 {
 public:
     typedef std::function<void (::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::ModifyPinResult _modifypin)> changePinReply_t;
-    typedef std::function<void (::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::HotspotConfigResult _hospotconfig)> configureProfileHotspotReply_t;
+    typedef std::function<void (::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::DataConnectionConfigResult _dataConfig)> configureDataConnectionReply_t;
     typedef std::function<void (::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::RoamingConfigResult _roamingconfig)> configureProfileRoamingReply_t;
     typedef std::function<void (::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::RemovePinResult _removepin)> disablePinReply_t;
     typedef std::function<void (::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::SetPinResult _setpin)> enablePinReply_t;
@@ -192,7 +182,7 @@ public:
     virtual ~SimProfileSelectorStub() {}
     void lockInterfaceVersionAttribute(bool _lockAccess) { static_cast<void>(_lockAccess); }
     bool hasElement(const uint32_t _id) const {
-        return (_id < 20);
+        return (_id < 19);
     }
     virtual const CommonAPI::Version& getInterfaceVersion(std::shared_ptr<CommonAPI::ClientId> _client) = 0;
 
@@ -202,10 +192,10 @@ public:
      * SPP subscribes to this broadcast after sending an activation code to start the download process
      */
     /// Sends a broadcast event for downloadAndInstallResult.
-    virtual void fireDownloadAndInstallResultEvent(const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid &_iccid, const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::InstallationResult &_installationresult) {
+    virtual void fireDownloadAndInstallResultEvent(const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid &_iccid, const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::ActivationCode &_activationCode, const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::InstallationResult &_installationresult) {
         auto stubAdapter = CommonAPI::Stub<SimProfileSelectorStubAdapter, SimProfileSelectorStubRemoteEvent>::stubAdapter_.lock();
         if (stubAdapter)
-            stubAdapter->fireDownloadAndInstallResultEvent(_iccid, _installationresult);
+            stubAdapter->fireDownloadAndInstallResultEvent(_iccid, _activationCode, _installationresult);
     }
     /*
      * description: 
@@ -217,8 +207,8 @@ public:
      * description: 
      * Standard[en]=WAVE provides an interface to MGU where it send the information of Hotspot (data connection) status for the currently enabled profile.
      */
-    /// This is the method that will be called on remote calls on the method configureProfileHotspot.
-    virtual void configureProfileHotspot(const std::shared_ptr<CommonAPI::ClientId> _client, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid _iccid, bool _hotspotActive, configureProfileHotspotReply_t _reply) = 0;
+    /// This is the method that will be called on remote calls on the method configureDataConnection.
+    virtual void configureDataConnection(const std::shared_ptr<CommonAPI::ClientId> _client, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid _iccid, bool _hotspotActive, configureDataConnectionReply_t _reply) = 0;
     /*
      * description: 
      * Standard[en]=WAVE provides an interface to MGU where it send the information of Roaming status for the currently enabled profile
@@ -301,18 +291,18 @@ public:
      * description: 
      * Standard[en]=WAVE provides an interface to the MGU where it can receive the current network status of the cSIM
      */
-    /// Provides getter access to the attribute csimNetworkStatus
-    virtual const std::string &getCsimNetworkStatusAttribute(const std::shared_ptr<CommonAPI::ClientId> _client) = 0;
+    /// Provides getter access to the attribute csimNetwork
+    virtual const std::string &getCsimNetworkAttribute(const std::shared_ptr<CommonAPI::ClientId> _client) = 0;
     /// sets attribute with the given value and propagates it to the adapter
-    virtual void fireCsimNetworkStatusAttributeChanged(std::string _value) {
+    virtual void fireCsimNetworkAttributeChanged(std::string _value) {
     auto stubAdapter = CommonAPI::Stub<SimProfileSelectorStubAdapter, SimProfileSelectorStubRemoteEvent>::stubAdapter_.lock();
     if (stubAdapter)
-        stubAdapter->fireCsimNetworkStatusAttributeChanged(_value);
+        stubAdapter->fireCsimNetworkAttributeChanged(_value);
     }
-    void lockCsimNetworkStatusAttribute(bool _lockAccess) {
+    void lockCsimNetworkAttribute(bool _lockAccess) {
         auto stubAdapter = CommonAPI::Stub<SimProfileSelectorStubAdapter, SimProfileSelectorStubRemoteEvent>::stubAdapter_.lock();
         if (stubAdapter)
-            stubAdapter->lockCsimNetworkStatusAttribute(_lockAccess);
+            stubAdapter->lockCsimNetworkAttribute(_lockAccess);
     }
     /*
      * description: 
@@ -350,23 +340,6 @@ public:
     }
     /*
      * description: 
-     * Standard[en]=WAVE provides an interface to MGU where it can request he number of PIN retries that the current ICCID has left
-     */
-    /// Provides getter access to the attribute pinRetries
-    virtual const uint8_t &getPinRetriesAttribute(const std::shared_ptr<CommonAPI::ClientId> _client) = 0;
-    /// sets attribute with the given value and propagates it to the adapter
-    virtual void firePinRetriesAttributeChanged(uint8_t _value) {
-    auto stubAdapter = CommonAPI::Stub<SimProfileSelectorStubAdapter, SimProfileSelectorStubRemoteEvent>::stubAdapter_.lock();
-    if (stubAdapter)
-        stubAdapter->firePinRetriesAttributeChanged(_value);
-    }
-    void lockPinRetriesAttribute(bool _lockAccess) {
-        auto stubAdapter = CommonAPI::Stub<SimProfileSelectorStubAdapter, SimProfileSelectorStubRemoteEvent>::stubAdapter_.lock();
-        if (stubAdapter)
-            stubAdapter->lockPinRetriesAttribute(_lockAccess);
-    }
-    /*
-     * description: 
      * Standard[en]=WAVE provides an interface to the MGU where it can receive a list of the  existing profiles stored in the consumer SIM.
      */
     /// Provides getter access to the attribute profiles
@@ -384,20 +357,21 @@ public:
     }
     /*
      * description: 
-     * Standard[en]=WAVE provides an interface to MGU where it can request the number of PUK retries that the current ICCID has left
+     * Standard[en]=WAVE provides an interface to the MGU where it can receive the current network status of the pSIM
+     * (at)example: 0 - 5
      */
-    /// Provides getter access to the attribute pukRetries
-    virtual const uint8_t &getPukRetriesAttribute(const std::shared_ptr<CommonAPI::ClientId> _client) = 0;
+    /// Provides getter access to the attribute psimNetwork
+    virtual const std::string &getPsimNetworkAttribute(const std::shared_ptr<CommonAPI::ClientId> _client) = 0;
     /// sets attribute with the given value and propagates it to the adapter
-    virtual void firePukRetriesAttributeChanged(uint8_t _value) {
+    virtual void firePsimNetworkAttributeChanged(std::string _value) {
     auto stubAdapter = CommonAPI::Stub<SimProfileSelectorStubAdapter, SimProfileSelectorStubRemoteEvent>::stubAdapter_.lock();
     if (stubAdapter)
-        stubAdapter->firePukRetriesAttributeChanged(_value);
+        stubAdapter->firePsimNetworkAttributeChanged(_value);
     }
-    void lockPukRetriesAttribute(bool _lockAccess) {
+    void lockPsimNetworkAttribute(bool _lockAccess) {
         auto stubAdapter = CommonAPI::Stub<SimProfileSelectorStubAdapter, SimProfileSelectorStubRemoteEvent>::stubAdapter_.lock();
         if (stubAdapter)
-            stubAdapter->lockPukRetriesAttribute(_lockAccess);
+            stubAdapter->lockPsimNetworkAttribute(_lockAccess);
     }
 
 
@@ -405,7 +379,7 @@ public:
     typedef CommonAPI::Stub<SimProfileSelectorStubAdapter, SimProfileSelectorStubRemoteEvent>::StubAdapterType StubAdapterType;
     typedef CommonAPI::Stub<SimProfileSelectorStubAdapter, SimProfileSelectorStubRemoteEvent>::RemoteEventHandlerType RemoteEventHandlerType;
     typedef SimProfileSelectorStubRemoteEvent RemoteEventType;
-    typedef ::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelector StubInterface;
+    typedef ::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelector StubInterface;
 };
 
 } // namespace simprofileselector
@@ -413,10 +387,10 @@ public:
 } // namespace infotainment
 } // namespace bmw
 } // namespace de
-} // namespace v2
+} // namespace v3
 
 
 // Compatibility
-namespace v2_0 = v2;
+namespace v3_0 = v3;
 
-#endif // V2_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_STUB_HPP_
+#endif // V3_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_STUB_HPP_

@@ -30,7 +30,9 @@ namespace simprofileselectortypes {
 namespace SimProfileSelectorTypes_ {
 
 // typecollection-specific deployment types
-typedef CommonAPI::SomeIP::EnumerationDeployment<uint8_t> ConfigureProfileHotspotResultDeployment_t;
+typedef CommonAPI::SomeIP::EnumerationDeployment<uint8_t> ChangePinResultDeployment_t;
+
+typedef CommonAPI::SomeIP::EnumerationDeployment<uint8_t> ConfigureDataConnectionResultDeployment_t;
 
 typedef CommonAPI::SomeIP::EnumerationDeployment<uint8_t> ConfigureProfileRoamingResultDeployment_t;
 
@@ -56,11 +58,11 @@ typedef CommonAPI::SomeIP::EnumerationDeployment<uint8_t> UnblockPinResultDeploy
 
 typedef CommonAPI::SomeIP::EnumerationDeployment<uint8_t> VerifyPinResultDeployment_t;
 
-typedef CommonAPI::SomeIP::EnumerationDeployment<uint8_t> ChangePinResultDeployment_t;
-
 typedef CommonAPI::SomeIP::StringDeployment ActivationCodeDeployment_t;
 
 typedef CommonAPI::SomeIP::StringDeployment ConfirmationCodeDeployment_t;
+
+typedef CommonAPI::EmptyDeployment CSimProfileLockStatusDeployment_t;
 
 typedef CommonAPI::SomeIP::StringDeployment EidDeployment_t;
 
@@ -68,9 +70,15 @@ typedef CommonAPI::SomeIP::StringDeployment IccidDeployment_t;
 
 typedef CommonAPI::SomeIP::StringDeployment ImeiDeployment_t;
 
+typedef CommonAPI::SomeIP::StringDeployment MetaInfoDeployment_t;
+
 typedef CommonAPI::SomeIP::StringDeployment PinDeployment_t;
 
+typedef CommonAPI::SomeIP::IntegerDeployment<uint8_t> PinRetriesDeployment_t;
+
 typedef CommonAPI::SomeIP::StringDeployment PukDeployment_t;
+
+typedef CommonAPI::SomeIP::IntegerDeployment<uint8_t> PukRetriesDeployment_t;
 
 typedef CommonAPI::SomeIP::IntegerDeployment<int64_t> TimestampDeployment_t;
 
@@ -92,8 +100,17 @@ typedef CommonAPI::SomeIP::StructDeployment<
 typedef CommonAPI::SomeIP::StructDeployment<
     CommonAPI::SomeIP::StringDeployment,
     ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::CSimProfileStatusDeployment_t,
+    CommonAPI::EmptyDeployment,
+    CommonAPI::SomeIP::StringDeployment,
+    CommonAPI::SomeIP::IntegerDeployment<uint8_t>,
+    CommonAPI::SomeIP::IntegerDeployment<uint8_t>,
     CommonAPI::SomeIP::IntegerDeployment<int64_t>
 > CSimProfileDeployment_t;
+
+typedef CommonAPI::SomeIP::StructDeployment<
+    ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::ConfigureDataConnectionResultDeployment_t,
+    CommonAPI::SomeIP::IntegerDeployment<uint16_t>
+> DataConnectionConfigResultDeployment_t;
 
 typedef CommonAPI::SomeIP::StructDeployment<
     ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::RequestDeleteAllResultDeployment_t,
@@ -116,13 +133,9 @@ typedef CommonAPI::SomeIP::StructDeployment<
 > EnableResultDeployment_t;
 
 typedef CommonAPI::SomeIP::StructDeployment<
-    ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::ConfigureProfileHotspotResultDeployment_t,
-    CommonAPI::SomeIP::IntegerDeployment<uint16_t>
-> HotspotConfigResultDeployment_t;
-
-typedef CommonAPI::SomeIP::StructDeployment<
     ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::InstallationErrorsDeployment_t,
-    CommonAPI::SomeIP::IntegerDeployment<uint16_t>
+    CommonAPI::SomeIP::IntegerDeployment<uint16_t>,
+    CommonAPI::SomeIP::StringDeployment
 > InstallationResultDeployment_t;
 
 typedef CommonAPI::SomeIP::StructDeployment<
@@ -147,6 +160,8 @@ typedef CommonAPI::SomeIP::StructDeployment<
 
 
 // typecollection-specific deployments
+COMMONAPI_EXPORT extern CommonAPI::SomeIP::StringDeployment InstallationResult_functionExecutionStatusDeployment;
+COMMONAPI_EXPORT extern ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::InstallationResultDeployment_t InstallationResultDeployment;
 
 } // namespace SimProfileSelectorTypes_
 } // namespace simprofileselectortypes

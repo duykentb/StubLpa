@@ -18,6 +18,8 @@ namespace simprofileselectortypes {
 namespace SimProfileSelectorTypes_ {
 
 // typecollection-specific deployments
+CommonAPI::SomeIP::StringDeployment InstallationResult_functionExecutionStatusDeployment(200, 4, CommonAPI::SomeIP::StringEncoding::UTF8);
+::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::InstallationResultDeployment_t InstallationResultDeployment(0, static_cast< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::InstallationErrorsDeployment_t* >(nullptr), static_cast< CommonAPI::SomeIP::IntegerDeployment<uint16_t>* >(nullptr), &::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::InstallationResult_functionExecutionStatusDeployment);
 
 } // namespace SimProfileSelectorTypes_
 } // namespace simprofileselectortypes

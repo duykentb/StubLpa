@@ -7,9 +7,9 @@
  * If a copy of the MPL was not distributed with this file, You can obtain one at
  * http://mozilla.org/MPL/2.0/.
  */
-#include <v2/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelectorSomeIPDeployment.hpp>
+#include <v3/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelectorSomeIPDeployment.hpp>
 
-namespace v2 {
+namespace v3 {
 namespace de {
 namespace bmw {
 namespace infotainment {
@@ -20,7 +20,8 @@ namespace SimProfileSelector_ {
 // Type-specific deployments
 
 // Attribute-specific deployments
-CommonAPI::SomeIP::StringDeployment csimNetworkStatusDeployment(510, 4, CommonAPI::SomeIP::StringEncoding::UTF8);
+CommonAPI::SomeIP::StringDeployment csimNetworkDeployment(510, 4, CommonAPI::SomeIP::StringEncoding::UTF8);
+CommonAPI::SomeIP::StringDeployment psimNetworkDeployment(200, 4, CommonAPI::SomeIP::StringEncoding::UTF8);
 
 // Argument-specific deployment
 
@@ -32,4 +33,4 @@ CommonAPI::SomeIP::StringDeployment csimNetworkStatusDeployment(510, 4, CommonAP
 } // namespace infotainment
 } // namespace bmw
 } // namespace de
-} // namespace v2
+} // namespace v3

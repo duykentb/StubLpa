@@ -7,7 +7,7 @@
  * If a copy of the MPL was not distributed with this file, You can obtain one at
  * http://mozilla.org/MPL/2.0/.
  */
-#include <v2/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelectorSomeIPProxy.hpp>
+#include <v3/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelectorSomeIPProxy.hpp>
 
 #if !defined (COMMONAPI_INTERNAL_COMPILATION)
 #define COMMONAPI_INTERNAL_COMPILATION
@@ -21,7 +21,7 @@
 #undef HAS_DEFINED_COMMONAPI_INTERNAL_COMPILATION_HERE
 #endif
 
-namespace v2 {
+namespace v3 {
 namespace de {
 namespace bmw {
 namespace infotainment {
@@ -35,8 +35,11 @@ std::shared_ptr<CommonAPI::SomeIP::Proxy> createSimProfileSelectorSomeIPProxy(
 }
 
 void initializeSimProfileSelectorSomeIPProxy() {
+    CommonAPI::SomeIP::AddressTranslator::get()->insert(
+        "local:de.bmw.infotainment.telematic.simprofileselector.SimProfileSelector:v3_0:1",
+        0xb08e, 0x1, 3, 0);
     CommonAPI::SomeIP::Factory::get()->registerProxyCreateMethod(
-        "de.bmw.infotainment.telematic.simprofileselector.SimProfileSelector:v2_0",
+        "de.bmw.infotainment.telematic.simprofileselector.SimProfileSelector:v3_0",
         &createSimProfileSelectorSomeIPProxy);
 }
 
@@ -49,13 +52,12 @@ SimProfileSelectorSomeIPProxy::SimProfileSelectorSomeIPProxy(
     const std::shared_ptr<CommonAPI::SomeIP::ProxyConnection> &_connection)
         : CommonAPI::SomeIP::Proxy(_address, _connection),
           csimMemorySpace_(*this, CommonAPI::SomeIP::eventgroup_id_t(0x1), CommonAPI::SomeIP::event_id_t(0x8009), CommonAPI::SomeIP::method_id_t(0x9), false, CommonAPI::SomeIP::reliability_type_e::RT_UNRELIABLE, false, static_cast< CommonAPI::SomeIP::IntegerDeployment<int64_t>* >(nullptr)),
-          csimNetworkStatus_(*this, CommonAPI::SomeIP::eventgroup_id_t(0x1), CommonAPI::SomeIP::event_id_t(0x8008), CommonAPI::SomeIP::method_id_t(0x8), false, CommonAPI::SomeIP::reliability_type_e::RT_UNRELIABLE, false, &::v2::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelector_::csimNetworkStatusDeployment),
+          csimNetwork_(*this, CommonAPI::SomeIP::eventgroup_id_t(0x1), CommonAPI::SomeIP::event_id_t(0x8008), CommonAPI::SomeIP::method_id_t(0x8), false, CommonAPI::SomeIP::reliability_type_e::RT_UNRELIABLE, false, &::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelector_::csimNetworkDeployment),
           eid_(*this, CommonAPI::SomeIP::eventgroup_id_t(0x1), CommonAPI::SomeIP::event_id_t(0x8006), CommonAPI::SomeIP::method_id_t(0x6), false, CommonAPI::SomeIP::reliability_type_e::RT_UNRELIABLE, false, static_cast< CommonAPI::SomeIP::StringDeployment* >(nullptr)),
           imei_(*this, CommonAPI::SomeIP::eventgroup_id_t(0x1), CommonAPI::SomeIP::event_id_t(0x8007), CommonAPI::SomeIP::method_id_t(0x7), false, CommonAPI::SomeIP::reliability_type_e::RT_UNRELIABLE, false, static_cast< CommonAPI::SomeIP::StringDeployment* >(nullptr)),
-          pinRetries_(*this, CommonAPI::SomeIP::eventgroup_id_t(0x1), CommonAPI::SomeIP::event_id_t(0x800f), CommonAPI::SomeIP::method_id_t(0xf), false, CommonAPI::SomeIP::reliability_type_e::RT_UNRELIABLE, false, static_cast< CommonAPI::SomeIP::IntegerDeployment<uint8_t>* >(nullptr)),
           profiles_(*this, CommonAPI::SomeIP::eventgroup_id_t(0x1), CommonAPI::SomeIP::event_id_t(0x8005), CommonAPI::SomeIP::method_id_t(0x5), false, CommonAPI::SomeIP::reliability_type_e::RT_UNRELIABLE, false, static_cast< CommonAPI::SomeIP::ArrayDeployment< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::CSimProfileDeployment_t >* >(nullptr)),
-          pukRetries_(*this, CommonAPI::SomeIP::eventgroup_id_t(0x1), CommonAPI::SomeIP::event_id_t(0x8010), CommonAPI::SomeIP::method_id_t(0x10), false, CommonAPI::SomeIP::reliability_type_e::RT_UNRELIABLE, false, static_cast< CommonAPI::SomeIP::IntegerDeployment<uint8_t>* >(nullptr)),
-          downloadAndInstallResult_(*this, 0x1, CommonAPI::SomeIP::event_id_t(0x8011), CommonAPI::SomeIP::event_type_e::ET_EVENT , CommonAPI::SomeIP::reliability_type_e::RT_RELIABLE, false, std::make_tuple(static_cast< CommonAPI::SomeIP::StringDeployment* >(nullptr), static_cast< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::InstallationResultDeployment_t* >(nullptr)))
+          psimNetwork_(*this, CommonAPI::SomeIP::eventgroup_id_t(0x1), CommonAPI::SomeIP::event_id_t(0x801a), CommonAPI::SomeIP::method_id_t(0x1a), false, CommonAPI::SomeIP::reliability_type_e::RT_UNRELIABLE, false, &::v3::de::bmw::infotainment::telematic::simprofileselector::SimProfileSelector_::psimNetworkDeployment),
+          downloadAndInstallResult_(*this, 0x1, CommonAPI::SomeIP::event_id_t(0x8011), CommonAPI::SomeIP::event_type_e::ET_EVENT , CommonAPI::SomeIP::reliability_type_e::RT_RELIABLE, false, std::make_tuple(static_cast< CommonAPI::SomeIP::StringDeployment* >(nullptr), static_cast< CommonAPI::SomeIP::StringDeployment* >(nullptr), &::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::InstallationResultDeployment))
 {
 }
 
@@ -65,8 +67,8 @@ SimProfileSelectorSomeIPProxy::~SimProfileSelectorSomeIPProxy() {
 SimProfileSelectorSomeIPProxy::CsimMemorySpaceAttribute& SimProfileSelectorSomeIPProxy::getCsimMemorySpaceAttribute() {
     return csimMemorySpace_;
 }
-SimProfileSelectorSomeIPProxy::CsimNetworkStatusAttribute& SimProfileSelectorSomeIPProxy::getCsimNetworkStatusAttribute() {
-    return csimNetworkStatus_;
+SimProfileSelectorSomeIPProxy::CsimNetworkAttribute& SimProfileSelectorSomeIPProxy::getCsimNetworkAttribute() {
+    return csimNetwork_;
 }
 SimProfileSelectorSomeIPProxy::EidAttribute& SimProfileSelectorSomeIPProxy::getEidAttribute() {
     return eid_;
@@ -74,14 +76,11 @@ SimProfileSelectorSomeIPProxy::EidAttribute& SimProfileSelectorSomeIPProxy::getE
 SimProfileSelectorSomeIPProxy::ImeiAttribute& SimProfileSelectorSomeIPProxy::getImeiAttribute() {
     return imei_;
 }
-SimProfileSelectorSomeIPProxy::PinRetriesAttribute& SimProfileSelectorSomeIPProxy::getPinRetriesAttribute() {
-    return pinRetries_;
-}
 SimProfileSelectorSomeIPProxy::ProfilesAttribute& SimProfileSelectorSomeIPProxy::getProfilesAttribute() {
     return profiles_;
 }
-SimProfileSelectorSomeIPProxy::PukRetriesAttribute& SimProfileSelectorSomeIPProxy::getPukRetriesAttribute() {
-    return pukRetries_;
+SimProfileSelectorSomeIPProxy::PsimNetworkAttribute& SimProfileSelectorSomeIPProxy::getPsimNetworkAttribute() {
+    return psimNetwork_;
 }
 
 SimProfileSelectorSomeIPProxy::DownloadAndInstallResultEvent& SimProfileSelectorSomeIPProxy::getDownloadAndInstallResultEvent() {
@@ -174,10 +173,10 @@ std::future<CommonAPI::CallStatus> SimProfileSelectorSomeIPProxy::changePinAsync
  * description: 
  * Standard[en]=WAVE provides an interface to MGU where it send the information of Hotspot (data connection) status for the currently enabled profile.
  */
-void SimProfileSelectorSomeIPProxy::configureProfileHotspot(::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid _iccid, bool _hotspotActive, CommonAPI::CallStatus &_internalCallStatus, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::HotspotConfigResult &_hospotconfig, const CommonAPI::CallInfo *_info) {
+void SimProfileSelectorSomeIPProxy::configureDataConnection(::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid _iccid, bool _hotspotActive, CommonAPI::CallStatus &_internalCallStatus, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::DataConnectionConfigResult &_dataConfig, const CommonAPI::CallInfo *_info) {
     CommonAPI::Deployable< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid, CommonAPI::SomeIP::StringDeployment> deploy_iccid(_iccid, static_cast< CommonAPI::SomeIP::StringDeployment* >(nullptr));
     CommonAPI::Deployable< bool, CommonAPI::EmptyDeployment> deploy_hotspotActive(_hotspotActive, static_cast< CommonAPI::EmptyDeployment* >(nullptr));
-    CommonAPI::Deployable< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::HotspotConfigResult, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::HotspotConfigResultDeployment_t> deploy_hospotconfig(static_cast< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::HotspotConfigResultDeployment_t* >(nullptr));
+    CommonAPI::Deployable< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::DataConnectionConfigResult, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::DataConnectionConfigResultDeployment_t> deploy_dataConfig(static_cast< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::DataConnectionConfigResultDeployment_t* >(nullptr));
     CommonAPI::SomeIP::ProxyHelper<
         CommonAPI::SomeIP::SerializableArguments<
             CommonAPI::Deployable<
@@ -191,8 +190,8 @@ void SimProfileSelectorSomeIPProxy::configureProfileHotspot(::de::bmw::infotainm
         >,
         CommonAPI::SomeIP::SerializableArguments<
             CommonAPI::Deployable<
-                ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::HotspotConfigResult,
-                ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::HotspotConfigResultDeployment_t
+                ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::DataConnectionConfigResult,
+                ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::DataConnectionConfigResultDeployment_t
             >
         >
     >::callMethodWithReply(
@@ -203,14 +202,14 @@ void SimProfileSelectorSomeIPProxy::configureProfileHotspot(::de::bmw::infotainm
         (_info ? _info : &CommonAPI::SomeIP::defaultCallInfo),
         deploy_iccid, deploy_hotspotActive,
         _internalCallStatus,
-        deploy_hospotconfig);
-    _hospotconfig = deploy_hospotconfig.getValue();
+        deploy_dataConfig);
+    _dataConfig = deploy_dataConfig.getValue();
 }
 
-std::future<CommonAPI::CallStatus> SimProfileSelectorSomeIPProxy::configureProfileHotspotAsync(const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid &_iccid, const bool &_hotspotActive, ConfigureProfileHotspotAsyncCallback _callback, const CommonAPI::CallInfo *_info) {
+std::future<CommonAPI::CallStatus> SimProfileSelectorSomeIPProxy::configureDataConnectionAsync(const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid &_iccid, const bool &_hotspotActive, ConfigureDataConnectionAsyncCallback _callback, const CommonAPI::CallInfo *_info) {
     CommonAPI::Deployable< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid, CommonAPI::SomeIP::StringDeployment> deploy_iccid(_iccid, static_cast< CommonAPI::SomeIP::StringDeployment* >(nullptr));
     CommonAPI::Deployable< bool, CommonAPI::EmptyDeployment> deploy_hotspotActive(_hotspotActive, static_cast< CommonAPI::EmptyDeployment* >(nullptr));
-    CommonAPI::Deployable< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::HotspotConfigResult, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::HotspotConfigResultDeployment_t> deploy_hospotconfig(static_cast< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::HotspotConfigResultDeployment_t* >(nullptr));
+    CommonAPI::Deployable< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::DataConnectionConfigResult, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::DataConnectionConfigResultDeployment_t> deploy_dataConfig(static_cast< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::DataConnectionConfigResultDeployment_t* >(nullptr));
     return CommonAPI::SomeIP::ProxyHelper<
         CommonAPI::SomeIP::SerializableArguments<
             CommonAPI::Deployable<
@@ -224,8 +223,8 @@ std::future<CommonAPI::CallStatus> SimProfileSelectorSomeIPProxy::configureProfi
         >,
         CommonAPI::SomeIP::SerializableArguments<
             CommonAPI::Deployable<
-                ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::HotspotConfigResult,
-                ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::HotspotConfigResultDeployment_t
+                ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::DataConnectionConfigResult,
+                ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::DataConnectionConfigResultDeployment_t
             >
         >
     >::callMethodAsync(
@@ -235,11 +234,11 @@ std::future<CommonAPI::CallStatus> SimProfileSelectorSomeIPProxy::configureProfi
         false,
         (_info ? _info : &CommonAPI::SomeIP::defaultCallInfo),
         deploy_iccid, deploy_hotspotActive,
-        [_callback] (CommonAPI::CallStatus _internalCallStatus, CommonAPI::Deployable< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::HotspotConfigResult, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::HotspotConfigResultDeployment_t > _hospotconfig) {
+        [_callback] (CommonAPI::CallStatus _internalCallStatus, CommonAPI::Deployable< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::DataConnectionConfigResult, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::DataConnectionConfigResultDeployment_t > _dataConfig) {
             if (_callback)
-                _callback(_internalCallStatus, _hospotconfig.getValue());
+                _callback(_internalCallStatus, _dataConfig.getValue());
         },
-        std::make_tuple(deploy_hospotconfig));
+        std::make_tuple(deploy_dataConfig));
 }
 
 /*
@@ -933,7 +932,7 @@ std::future<CommonAPI::CallStatus> SimProfileSelectorSomeIPProxy::verifyPinAsync
 }
 
 void SimProfileSelectorSomeIPProxy::getOwnVersion(uint16_t& ownVersionMajor, uint16_t& ownVersionMinor) const {
-    ownVersionMajor = 2;
+    ownVersionMajor = 3;
     ownVersionMinor = 0;
 }
 
@@ -946,4 +945,4 @@ std::future<void> SimProfileSelectorSomeIPProxy::getCompletionFuture() {
 } // namespace infotainment
 } // namespace bmw
 } // namespace de
-} // namespace v2
+} // namespace v3

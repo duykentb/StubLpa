@@ -26,23 +26,23 @@ endif()
 find_package (vsomeip3 3.1.0 REQUIRED)
 
 list(APPEND SERVICE_COMMONAPI_GEN_SRCS
-    src-gen/core/v2/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelector.hpp
-    src-gen/core/v2/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelectorStubDefault.hpp
-    src-gen/core/v2/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelectorStub.hpp
+    src-gen/core/v3/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelector.hpp
+    src-gen/core/v3/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelectorStubDefault.hpp
+    src-gen/core/v3/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelectorStub.hpp
     src-gen/core/de/bmw/infotainment/telematic/simprofileselectortypes/SimProfileSelectorTypes.hpp
 )
 
 
 list(APPEND COMMON_SOMEIP_GEN_SRCS
-    src-gen/someip/v2/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelectorSomeIPDeployment.hpp
-    src-gen/someip/v2/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelectorSomeIPDeployment.cpp
+    src-gen/someip/v3/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelectorSomeIPDeployment.hpp
+    src-gen/someip/v3/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelectorSomeIPDeployment.cpp
     src-gen/someip/de/bmw/infotainment/telematic/simprofileselectortypes/SimProfileSelectorTypesSomeIPDeployment.cpp
     src-gen/someip/de/bmw/infotainment/telematic/simprofileselectortypes/SimProfileSelectorTypesSomeIPDeployment.hpp
 )
 
 list(APPEND SERVICE_SOMEIP_GEN_SRCS
-    src-gen/someip/v2/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelectorSomeIPStubAdapter.cpp
-    src-gen/someip/v2/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelectorSomeIPStubAdapter.hpp
+    src-gen/someip/v3/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelectorSomeIPStubAdapter.cpp
+    src-gen/someip/v3/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelectorSomeIPStubAdapter.hpp
 )
 set(PROJECT_SOURCES
         main.cpp

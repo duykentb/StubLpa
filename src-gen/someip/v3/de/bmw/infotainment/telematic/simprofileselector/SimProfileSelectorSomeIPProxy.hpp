@@ -7,12 +7,12 @@
  * If a copy of the MPL was not distributed with this file, You can obtain one at
  * http://mozilla.org/MPL/2.0/.
  */
-#ifndef V2_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_SIM_PROFILE_SELECTOR_SOMEIP_PROXY_HPP_
-#define V2_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_SIM_PROFILE_SELECTOR_SOMEIP_PROXY_HPP_
+#ifndef V3_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_SIM_PROFILE_SELECTOR_SOMEIP_PROXY_HPP_
+#define V3_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_SIM_PROFILE_SELECTOR_SOMEIP_PROXY_HPP_
 
-#include <v2/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelectorProxyBase.hpp>
-#include <v2/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelectorSomeIPDeployment.hpp>
+#include <v3/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelectorProxyBase.hpp>
 #include <de/bmw/infotainment/telematic/simprofileselectortypes/SimProfileSelectorTypesSomeIPDeployment.hpp>
+#include <v3/de/bmw/infotainment/telematic/simprofileselector/SimProfileSelectorSomeIPDeployment.hpp>
 
 #if !defined (COMMONAPI_INTERNAL_COMPILATION)
 #define COMMONAPI_INTERNAL_COMPILATION
@@ -44,7 +44,7 @@
 #  endif
 # endif
 
-namespace v2 {
+namespace v3 {
 namespace de {
 namespace bmw {
 namespace infotainment {
@@ -63,17 +63,15 @@ public:
 
     virtual CsimMemorySpaceAttribute& getCsimMemorySpaceAttribute();
 
-    virtual CsimNetworkStatusAttribute& getCsimNetworkStatusAttribute();
+    virtual CsimNetworkAttribute& getCsimNetworkAttribute();
 
     virtual EidAttribute& getEidAttribute();
 
     virtual ImeiAttribute& getImeiAttribute();
 
-    virtual PinRetriesAttribute& getPinRetriesAttribute();
-
     virtual ProfilesAttribute& getProfilesAttribute();
 
-    virtual PukRetriesAttribute& getPukRetriesAttribute();
+    virtual PsimNetworkAttribute& getPsimNetworkAttribute();
 
     virtual DownloadAndInstallResultEvent& getDownloadAndInstallResultEvent();
 
@@ -89,9 +87,9 @@ public:
      * description: 
      * Standard[en]=WAVE provides an interface to MGU where it send the information of Hotspot (data connection) status for the currently enabled profile.
      */
-    virtual void configureProfileHotspot(::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid _iccid, bool _hotspotActive, CommonAPI::CallStatus &_internalCallStatus, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::HotspotConfigResult &_hospotconfig, const CommonAPI::CallInfo *_info);
+    virtual void configureDataConnection(::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid _iccid, bool _hotspotActive, CommonAPI::CallStatus &_internalCallStatus, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::DataConnectionConfigResult &_dataConfig, const CommonAPI::CallInfo *_info);
 
-    virtual std::future<CommonAPI::CallStatus> configureProfileHotspotAsync(const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid &_iccid, const bool &_hotspotActive, ConfigureProfileHotspotAsyncCallback _callback, const CommonAPI::CallInfo *_info);
+    virtual std::future<CommonAPI::CallStatus> configureDataConnectionAsync(const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid &_iccid, const bool &_hotspotActive, ConfigureDataConnectionAsyncCallback _callback, const CommonAPI::CallInfo *_info);
 
     /*
      * description: 
@@ -180,13 +178,12 @@ public:
 
 private:
     CommonAPI::SomeIP::ObservableAttribute<CommonAPI::SomeIP::ReadonlyAttribute<CsimMemorySpaceAttribute, CommonAPI::SomeIP::IntegerDeployment<int64_t>>> csimMemorySpace_;
-    CommonAPI::SomeIP::ObservableAttribute<CommonAPI::SomeIP::ReadonlyAttribute<CsimNetworkStatusAttribute, CommonAPI::SomeIP::StringDeployment>> csimNetworkStatus_;
+    CommonAPI::SomeIP::ObservableAttribute<CommonAPI::SomeIP::ReadonlyAttribute<CsimNetworkAttribute, CommonAPI::SomeIP::StringDeployment>> csimNetwork_;
     CommonAPI::SomeIP::ObservableAttribute<CommonAPI::SomeIP::ReadonlyAttribute<EidAttribute, CommonAPI::SomeIP::StringDeployment>> eid_;
     CommonAPI::SomeIP::ObservableAttribute<CommonAPI::SomeIP::ReadonlyAttribute<ImeiAttribute, CommonAPI::SomeIP::StringDeployment>> imei_;
-    CommonAPI::SomeIP::ObservableAttribute<CommonAPI::SomeIP::ReadonlyAttribute<PinRetriesAttribute, CommonAPI::SomeIP::IntegerDeployment<uint8_t>>> pinRetries_;
     CommonAPI::SomeIP::ObservableAttribute<CommonAPI::SomeIP::ReadonlyAttribute<ProfilesAttribute, CommonAPI::SomeIP::ArrayDeployment< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::CSimProfileDeployment_t >>> profiles_;
-    CommonAPI::SomeIP::ObservableAttribute<CommonAPI::SomeIP::ReadonlyAttribute<PukRetriesAttribute, CommonAPI::SomeIP::IntegerDeployment<uint8_t>>> pukRetries_;
-    CommonAPI::SomeIP::Event<DownloadAndInstallResultEvent, CommonAPI::Deployable< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid, CommonAPI::SomeIP::StringDeployment >, CommonAPI::Deployable< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::InstallationResult, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::InstallationResultDeployment_t >> downloadAndInstallResult_;
+    CommonAPI::SomeIP::ObservableAttribute<CommonAPI::SomeIP::ReadonlyAttribute<PsimNetworkAttribute, CommonAPI::SomeIP::StringDeployment>> psimNetwork_;
+    CommonAPI::SomeIP::Event<DownloadAndInstallResultEvent, CommonAPI::Deployable< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::Iccid, CommonAPI::SomeIP::StringDeployment >, CommonAPI::Deployable< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::ActivationCode, CommonAPI::SomeIP::StringDeployment >, CommonAPI::Deployable< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::InstallationResult, ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes_::InstallationResultDeployment_t >> downloadAndInstallResult_;
 
 };
 
@@ -195,6 +192,6 @@ private:
 } // namespace infotainment
 } // namespace bmw
 } // namespace de
-} // namespace v2
+} // namespace v3
 
-#endif // V2_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_SOMEIP_PROXY_HPP_
+#endif // V3_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_Sim_Profile_Selector_SOMEIP_PROXY_HPP_

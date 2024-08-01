@@ -1,0 +1,8 @@
+{
+    "de.bmw.infotainment.telematic.simprofileselector.SimProfileSelector" : {
+        "service_id": 45198,
+        "instances" : {
+            "1": 1
+        }
+    }
+}

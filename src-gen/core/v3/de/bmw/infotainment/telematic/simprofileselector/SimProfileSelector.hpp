@@ -7,8 +7,8 @@
 * If a copy of the MPL was not distributed with this file, You can obtain one at
 * http://mozilla.org/MPL/2.0/.
 */
-#ifndef V2_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_SIM_PROFILE_SELECTOR_HPP_
-#define V2_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_SIM_PROFILE_SELECTOR_HPP_
+#ifndef V3_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_SIM_PROFILE_SELECTOR_HPP_
+#define V3_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_SIM_PROFILE_SELECTOR_HPP_
 
 
 
@@ -25,7 +25,7 @@
 #undef HAS_DEFINED_COMMONAPI_INTERNAL_COMPILATION_HERE
 #endif
 
-namespace v2 {
+namespace v3 {
 namespace de {
 namespace bmw {
 namespace infotainment {
@@ -41,11 +41,11 @@ public:
 };
 
 const char* SimProfileSelector::getInterface() {
-    return ("de.bmw.infotainment.telematic.simprofileselector.SimProfileSelector:v2_0");
+    return ("de.bmw.infotainment.telematic.simprofileselector.SimProfileSelector:v3_0");
 }
 
 CommonAPI::Version SimProfileSelector::getInterfaceVersion() {
-    return CommonAPI::Version(2, 0);
+    return CommonAPI::Version(3, 0);
 }
 
 
@@ -54,13 +54,13 @@ CommonAPI::Version SimProfileSelector::getInterfaceVersion() {
 } // namespace infotainment
 } // namespace bmw
 } // namespace de
-} // namespace v2
+} // namespace v3
 
 namespace CommonAPI {
 }
 
 
 // Compatibility
-namespace v2_0 = v2;
+namespace v3_0 = v3;
 
-#endif // V2_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_SIM_PROFILE_SELECTOR_HPP_
+#endif // V3_DE_BMW_INFOTAINMENT_TELEMATIC_SIMPROFILESELECTOR_SIM_PROFILE_SELECTOR_HPP_

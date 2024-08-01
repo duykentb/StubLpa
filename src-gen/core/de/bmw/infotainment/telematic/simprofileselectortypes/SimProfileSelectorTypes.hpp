@@ -53,6 +53,12 @@ struct SimProfileSelectorTypes {
     typedef std::string ConfirmationCode;
     /*
      * description: 
+     * Standard[en]=The consumer SIM can be PIN protected (true) or not (false)
+     * (at)details: If this attribute is set to true, then if pinRetries=0 the profile is pukProtected and if also pukRetries=0 then the profile is locked and cannot be unlocked
+     */
+    typedef bool CSimProfileLockStatus;
+    /*
+     * description: 
      * Standard[en]=the EID of a CSIM
      */
     typedef std::string Eid;
@@ -68,9 +74,20 @@ struct SimProfileSelectorTypes {
     typedef std::string Imei;
     /*
      * description: 
+     * Standard[en]=possible information required to identify BT reader profiles
+     * (at)example: device ID
+     */
+    typedef std::string MetaInfo;
+    /*
+     * description: 
      * Standard[en]=the PIN for cSIM profiles
      */
     typedef std::string Pin;
+    /*
+     * description: 
+     * Standard[en]=WAVE provides an interface to MGU where it can request he number of PIN retries that the current ICCID has left.
+     */
+    typedef uint8_t PinRetries;
     /*
      * description: 
      * Standard[en]=the PUK for cSIM profiles
@@ -78,11 +95,91 @@ struct SimProfileSelectorTypes {
     typedef std::string Puk;
     /*
      * description: 
+     * Standard[en]=WAVE provides an interface to MGU where it can request the number of PUK retries that the current ICCID has left.
+     */
+    typedef uint8_t PukRetries;
+    /*
+     * description: 
      * Standard[en]=Timestamp for the relevant event or data-generation - in milliseconds since 01.01.1970 00:00:00:000 UTC
      */
     typedef int64_t Timestamp;
     
-    struct ConfigureProfileHotspotResult : CommonAPI::Enumeration< uint8_t> {
+    struct ChangePinResult : CommonAPI::Enumeration< uint8_t> {
+        enum Literal : uint8_t {
+            /*
+             * description: 
+             * PIN changed successfully.
+             */
+            SUCCESS = 0,
+            /*
+             * description: 
+             * Unknown error occured during PIN changed.
+             */
+            FAILED = 1,
+            /*
+             * description: 
+             * The new PIN has invalid characters.
+             */
+            INVALID_NEW_PIN = 2,
+            /*
+             * description: 
+             * The new PIN has invalid characters.
+             */
+            INVALID_OLD_PIN = 3,
+            /*
+             * description: 
+             * The old PIN is wrong.
+             */
+            WRONG_OLD_PIN = 4
+        };
+    
+        ChangePinResult()
+            : CommonAPI::Enumeration< uint8_t>(static_cast< uint8_t>(Literal::SUCCESS)) {}
+        ChangePinResult(Literal _literal)
+            : CommonAPI::Enumeration< uint8_t>(static_cast< uint8_t>(_literal)) {}
+    
+        inline bool validate() const {
+            switch (value_) {
+                case static_cast< uint8_t>(Literal::SUCCESS):
+                case static_cast< uint8_t>(Literal::FAILED):
+                case static_cast< uint8_t>(Literal::INVALID_NEW_PIN):
+                case static_cast< uint8_t>(Literal::INVALID_OLD_PIN):
+                case static_cast< uint8_t>(Literal::WRONG_OLD_PIN):
+                return true;
+            default:
+                return false;
+            }
+        }
+    
+        inline bool operator==(const ChangePinResult &_other) const { return (value_ == _other.value_); }
+        inline bool operator!=(const ChangePinResult &_other) const { return (value_ != _other.value_); }
+        inline bool operator<=(const ChangePinResult &_other) const { return (value_ <= _other.value_); }
+        inline bool operator>=(const ChangePinResult &_other) const { return (value_ >= _other.value_); }
+        inline bool operator<(const ChangePinResult &_other) const { return (value_ < _other.value_); }
+        inline bool operator>(const ChangePinResult &_other) const { return (value_ > _other.value_); }
+    
+        inline bool operator==(const Literal &_value) const { return (value_ == static_cast< uint8_t>(_value)); }
+        inline bool operator!=(const Literal &_value) const { return (value_ != static_cast< uint8_t>(_value)); }
+        inline bool operator<=(const Literal &_value) const { return (value_ <= static_cast< uint8_t>(_value)); }
+        inline bool operator>=(const Literal &_value) const { return (value_ >= static_cast< uint8_t>(_value)); }
+        inline bool operator<(const Literal &_value) const { return (value_ < static_cast< uint8_t>(_value)); }
+        inline bool operator>(const Literal &_value) const { return (value_ > static_cast< uint8_t>(_value)); }
+    
+        const char* toString() const noexcept
+        {
+            switch(value_)
+            {
+            case static_cast< uint8_t>(Literal::SUCCESS): return "SUCCESS";
+            case static_cast< uint8_t>(Literal::FAILED): return "FAILED";
+            case static_cast< uint8_t>(Literal::INVALID_NEW_PIN): return "INVALID_NEW_PIN";
+            case static_cast< uint8_t>(Literal::INVALID_OLD_PIN): return "INVALID_OLD_PIN";
+            case static_cast< uint8_t>(Literal::WRONG_OLD_PIN): return "WRONG_OLD_PIN";
+            default: return "UNDEFINED";
+            }
+        }
+    };
+    
+    struct ConfigureDataConnectionResult : CommonAPI::Enumeration< uint8_t> {
         enum Literal : uint8_t {
             /*
              * description: 
@@ -96,9 +193,9 @@ struct SimProfileSelectorTypes {
             HOTSPOT_CONFIG_FAILED = 1
         };
     
-        ConfigureProfileHotspotResult()
+        ConfigureDataConnectionResult()
             : CommonAPI::Enumeration< uint8_t>(static_cast< uint8_t>(Literal::SUCCESS)) {}
-        ConfigureProfileHotspotResult(Literal _literal)
+        ConfigureDataConnectionResult(Literal _literal)
             : CommonAPI::Enumeration< uint8_t>(static_cast< uint8_t>(_literal)) {}
     
         inline bool validate() const {
@@ -111,12 +208,12 @@ struct SimProfileSelectorTypes {
             }
         }
     
-        inline bool operator==(const ConfigureProfileHotspotResult &_other) const { return (value_ == _other.value_); }
-        inline bool operator!=(const ConfigureProfileHotspotResult &_other) const { return (value_ != _other.value_); }
-        inline bool operator<=(const ConfigureProfileHotspotResult &_other) const { return (value_ <= _other.value_); }
-        inline bool operator>=(const ConfigureProfileHotspotResult &_other) const { return (value_ >= _other.value_); }
-        inline bool operator<(const ConfigureProfileHotspotResult &_other) const { return (value_ < _other.value_); }
-        inline bool operator>(const ConfigureProfileHotspotResult &_other) const { return (value_ > _other.value_); }
+        inline bool operator==(const ConfigureDataConnectionResult &_other) const { return (value_ == _other.value_); }
+        inline bool operator!=(const ConfigureDataConnectionResult &_other) const { return (value_ != _other.value_); }
+        inline bool operator<=(const ConfigureDataConnectionResult &_other) const { return (value_ <= _other.value_); }
+        inline bool operator>=(const ConfigureDataConnectionResult &_other) const { return (value_ >= _other.value_); }
+        inline bool operator<(const ConfigureDataConnectionResult &_other) const { return (value_ < _other.value_); }
+        inline bool operator>(const ConfigureDataConnectionResult &_other) const { return (value_ > _other.value_); }
     
         inline bool operator==(const Literal &_value) const { return (value_ == static_cast< uint8_t>(_value)); }
         inline bool operator!=(const Literal &_value) const { return (value_ != static_cast< uint8_t>(_value)); }
@@ -946,81 +1043,6 @@ struct SimProfileSelectorTypes {
             }
         }
     };
-    
-    struct ChangePinResult : CommonAPI::Enumeration< uint8_t> {
-        enum Literal : uint8_t {
-            /*
-             * description: 
-             * PIN changed successfully
-             */
-            SUCCESS = 0,
-            /*
-             * description: 
-             * Unknown error occured during PIN changed
-             */
-            FAILED = 1,
-            /*
-             * description: 
-             * The new PIN has invalid characters
-             */
-            INVALID_NEW_PIN = 2,
-            /*
-             * description: 
-             * The new PIN has invalid characters
-             */
-            INVALID_OLD_PIN = 3,
-            /*
-             * description: 
-             * The old PIN is wrong
-             */
-            WRONG_OLD_PIN = 4
-        };
-    
-        ChangePinResult()
-            : CommonAPI::Enumeration< uint8_t>(static_cast< uint8_t>(Literal::SUCCESS)) {}
-        ChangePinResult(Literal _literal)
-            : CommonAPI::Enumeration< uint8_t>(static_cast< uint8_t>(_literal)) {}
-    
-        inline bool validate() const {
-            switch (value_) {
-                case static_cast< uint8_t>(Literal::SUCCESS):
-                case static_cast< uint8_t>(Literal::FAILED):
-                case static_cast< uint8_t>(Literal::INVALID_NEW_PIN):
-                case static_cast< uint8_t>(Literal::INVALID_OLD_PIN):
-                case static_cast< uint8_t>(Literal::WRONG_OLD_PIN):
-                return true;
-            default:
-                return false;
-            }
-        }
-    
-        inline bool operator==(const ChangePinResult &_other) const { return (value_ == _other.value_); }
-        inline bool operator!=(const ChangePinResult &_other) const { return (value_ != _other.value_); }
-        inline bool operator<=(const ChangePinResult &_other) const { return (value_ <= _other.value_); }
-        inline bool operator>=(const ChangePinResult &_other) const { return (value_ >= _other.value_); }
-        inline bool operator<(const ChangePinResult &_other) const { return (value_ < _other.value_); }
-        inline bool operator>(const ChangePinResult &_other) const { return (value_ > _other.value_); }
-    
-        inline bool operator==(const Literal &_value) const { return (value_ == static_cast< uint8_t>(_value)); }
-        inline bool operator!=(const Literal &_value) const { return (value_ != static_cast< uint8_t>(_value)); }
-        inline bool operator<=(const Literal &_value) const { return (value_ <= static_cast< uint8_t>(_value)); }
-        inline bool operator>=(const Literal &_value) const { return (value_ >= static_cast< uint8_t>(_value)); }
-        inline bool operator<(const Literal &_value) const { return (value_ < static_cast< uint8_t>(_value)); }
-        inline bool operator>(const Literal &_value) const { return (value_ > static_cast< uint8_t>(_value)); }
-    
-        const char* toString() const noexcept
-        {
-            switch(value_)
-            {
-            case static_cast< uint8_t>(Literal::SUCCESS): return "SUCCESS";
-            case static_cast< uint8_t>(Literal::FAILED): return "FAILED";
-            case static_cast< uint8_t>(Literal::INVALID_NEW_PIN): return "INVALID_NEW_PIN";
-            case static_cast< uint8_t>(Literal::INVALID_OLD_PIN): return "INVALID_OLD_PIN";
-            case static_cast< uint8_t>(Literal::WRONG_OLD_PIN): return "WRONG_OLD_PIN";
-            default: return "UNDEFINED";
-            }
-        }
-    };
     /*
      * description: 
      * Standard[en]=The possible result of the send activation code request
@@ -1125,19 +1147,27 @@ struct SimProfileSelectorTypes {
      * description: 
      * Standard[en]=the CSIM profile ICCID paired with its current activation status
      */
-    struct CSimProfile : CommonAPI::Struct< Iccid, CSimProfileStatus, Timestamp> {
+    struct CSimProfile : CommonAPI::Struct< Iccid, CSimProfileStatus, CSimProfileLockStatus, MetaInfo, PinRetries, PukRetries, Timestamp> {
     
         CSimProfile()
         {
             std::get< 0>(values_) = Iccid();
             std::get< 1>(values_) = CSimProfileStatus();
-            std::get< 2>(values_) = Timestamp();
+            std::get< 2>(values_) = CSimProfileLockStatus();
+            std::get< 3>(values_) = MetaInfo();
+            std::get< 4>(values_) = PinRetries();
+            std::get< 5>(values_) = PukRetries();
+            std::get< 6>(values_) = Timestamp();
         }
-        CSimProfile(const Iccid &_iccid, const CSimProfileStatus &_profileStatus, const Timestamp &_statusTimestamp)
+        CSimProfile(const Iccid &_iccid, const CSimProfileStatus &_profileStatus, const CSimProfileLockStatus &_lockStatus, const MetaInfo &_information, const PinRetries &_currentPinRetries, const PukRetries &_currentPukRetries, const Timestamp &_statusTimestamp)
         {
             std::get< 0>(values_) = _iccid;
             std::get< 1>(values_) = _profileStatus;
-            std::get< 2>(values_) = _statusTimestamp;
+            std::get< 2>(values_) = _lockStatus;
+            std::get< 3>(values_) = _information;
+            std::get< 4>(values_) = _currentPinRetries;
+            std::get< 5>(values_) = _currentPukRetries;
+            std::get< 6>(values_) = _statusTimestamp;
         }
         /*
          * description: 
@@ -1153,14 +1183,74 @@ struct SimProfileSelectorTypes {
         inline void setProfileStatus(const CSimProfileStatus &_value) { std::get< 1>(values_) = _value; }
         /*
          * description: 
+         * Standard[en]=the current lock status of the CSIM profile
+         */
+        inline const CSimProfileLockStatus &getLockStatus() const { return std::get< 2>(values_); }
+        inline void setLockStatus(const CSimProfileLockStatus &_value) { std::get< 2>(values_) = _value; }
+        /*
+         * description: 
+         * Standard[en]=extra info for BT reader use case
+         */
+        inline const MetaInfo &getInformation() const { return std::get< 3>(values_); }
+        inline void setInformation(const MetaInfo &_value) { std::get< 3>(values_) = _value; }
+        /*
+         * description: 
+         * Standard[en]=the current number of PIN retries left for the CSIM profile
+         */
+        inline const PinRetries &getCurrentPinRetries() const { return std::get< 4>(values_); }
+        inline void setCurrentPinRetries(const PinRetries &_value) { std::get< 4>(values_) = _value; }
+        /*
+         * description: 
+         * Standard[en]=the current number of PUK retries left for the CSIM profile
+         */
+        inline const PukRetries &getCurrentPukRetries() const { return std::get< 5>(values_); }
+        inline void setCurrentPukRetries(const PukRetries &_value) { std::get< 5>(values_) = _value; }
+        /*
+         * description: 
          * Standard[en]=The timestamp when the profile's status was last updated.
          */
-        inline const Timestamp &getStatusTimestamp() const { return std::get< 2>(values_); }
-        inline void setStatusTimestamp(const Timestamp &_value) { std::get< 2>(values_) = _value; }
+        inline const Timestamp &getStatusTimestamp() const { return std::get< 6>(values_); }
+        inline void setStatusTimestamp(const Timestamp &_value) { std::get< 6>(values_) = _value; }
         inline bool operator==(const CSimProfile& _other) const {
-        return (getIccid() == _other.getIccid() && getProfileStatus() == _other.getProfileStatus() && getStatusTimestamp() == _other.getStatusTimestamp());
+        return (getIccid() == _other.getIccid() && getProfileStatus() == _other.getProfileStatus() && getLockStatus() == _other.getLockStatus() && getInformation() == _other.getInformation() && getCurrentPinRetries() == _other.getCurrentPinRetries() && getCurrentPukRetries() == _other.getCurrentPukRetries() && getStatusTimestamp() == _other.getStatusTimestamp());
         }
         inline bool operator!=(const CSimProfile &_other) const {
+            return !((*this) == _other);
+        }
+    
+    };
+    /*
+     * description: 
+     * Standard[en]=The possible result of the cSIM data connection configuration
+     */
+    struct DataConnectionConfigResult : CommonAPI::Struct< ConfigureDataConnectionResult, uint16_t> {
+    
+        DataConnectionConfigResult()
+        {
+            std::get< 0>(values_) = ConfigureDataConnectionResult();
+            std::get< 1>(values_) = 0u;
+        }
+        DataConnectionConfigResult(const ConfigureDataConnectionResult &_configureDataConnectionResult, const uint16_t &_csimErrorCode)
+        {
+            std::get< 0>(values_) = _configureDataConnectionResult;
+            std::get< 1>(values_) = _csimErrorCode;
+        }
+        /*
+         * description: 
+         * Standard[en]=SW error during data connection configuration
+         */
+        inline const ConfigureDataConnectionResult &getConfigureDataConnectionResult() const { return std::get< 0>(values_); }
+        inline void setConfigureDataConnectionResult(const ConfigureDataConnectionResult &_value) { std::get< 0>(values_) = _value; }
+        /*
+         * description: 
+         * Standard[en]=the 2 byte status code of the CSIM in case of an error, if no CSIM hardware related error, it will be 0.
+         */
+        inline const uint16_t &getCsimErrorCode() const { return std::get< 1>(values_); }
+        inline void setCsimErrorCode(const uint16_t &_value) { std::get< 1>(values_) = _value; }
+        inline bool operator==(const DataConnectionConfigResult& _other) const {
+        return (getConfigureDataConnectionResult() == _other.getConfigureDataConnectionResult() && getCsimErrorCode() == _other.getCsimErrorCode());
+        }
+        inline bool operator!=(const DataConnectionConfigResult &_other) const {
             return !((*this) == _other);
         }
     
@@ -1311,55 +1401,21 @@ struct SimProfileSelectorTypes {
     };
     /*
      * description: 
-     * Standard[en]=The possible result of the hotspot configuration
-     */
-    struct HotspotConfigResult : CommonAPI::Struct< ConfigureProfileHotspotResult, uint16_t> {
-    
-        HotspotConfigResult()
-        {
-            std::get< 0>(values_) = ConfigureProfileHotspotResult();
-            std::get< 1>(values_) = 0u;
-        }
-        HotspotConfigResult(const ConfigureProfileHotspotResult &_configureProfileHotspotResult, const uint16_t &_csimErrorCode)
-        {
-            std::get< 0>(values_) = _configureProfileHotspotResult;
-            std::get< 1>(values_) = _csimErrorCode;
-        }
-        /*
-         * description: 
-         * Standard[en]=SW error during hotspot configuration
-         */
-        inline const ConfigureProfileHotspotResult &getConfigureProfileHotspotResult() const { return std::get< 0>(values_); }
-        inline void setConfigureProfileHotspotResult(const ConfigureProfileHotspotResult &_value) { std::get< 0>(values_) = _value; }
-        /*
-         * description: 
-         * Standard[en]=the 2 byte status code of the CSIM in case of an error, if no CSIM hardware related error, it will be 0.
-         */
-        inline const uint16_t &getCsimErrorCode() const { return std::get< 1>(values_); }
-        inline void setCsimErrorCode(const uint16_t &_value) { std::get< 1>(values_) = _value; }
-        inline bool operator==(const HotspotConfigResult& _other) const {
-        return (getConfigureProfileHotspotResult() == _other.getConfigureProfileHotspotResult() && getCsimErrorCode() == _other.getCsimErrorCode());
-        }
-        inline bool operator!=(const HotspotConfigResult &_other) const {
-            return !((*this) == _other);
-        }
-    
-    };
-    /*
-     * description: 
      * Standard[en]=The possible result of the download and installation request
      */
-    struct InstallationResult : CommonAPI::Struct< InstallationErrors, uint16_t> {
+    struct InstallationResult : CommonAPI::Struct< InstallationErrors, uint16_t, std::string> {
     
         InstallationResult()
         {
             std::get< 0>(values_) = InstallationErrors();
             std::get< 1>(values_) = 0u;
+            std::get< 2>(values_) = "";
         }
-        InstallationResult(const InstallationErrors &_installationError, const uint16_t &_csimErrorCode)
+        InstallationResult(const InstallationErrors &_installationError, const uint16_t &_csimErrorCode, const std::string &_functionExecutionStatus)
         {
             std::get< 0>(values_) = _installationError;
             std::get< 1>(values_) = _csimErrorCode;
+            std::get< 2>(values_) = _functionExecutionStatus;
         }
         /*
          * description: 
@@ -1367,10 +1423,16 @@ struct SimProfileSelectorTypes {
          */
         inline const InstallationErrors &getInstallationError() const { return std::get< 0>(values_); }
         inline void setInstallationError(const InstallationErrors &_value) { std::get< 0>(values_) = _value; }
+        /*
+         * description: 
+         * Standard[en]=the 2 byte status code of the CSIM in case of an error, if no CSIM hardware related error, it will be 0.
+         */
         inline const uint16_t &getCsimErrorCode() const { return std::get< 1>(values_); }
         inline void setCsimErrorCode(const uint16_t &_value) { std::get< 1>(values_) = _value; }
+        inline const std::string &getFunctionExecutionStatus() const { return std::get< 2>(values_); }
+        inline void setFunctionExecutionStatus(const std::string &_value) { std::get< 2>(values_) = _value; }
         inline bool operator==(const InstallationResult& _other) const {
-        return (getInstallationError() == _other.getInstallationError() && getCsimErrorCode() == _other.getCsimErrorCode());
+        return (getInstallationError() == _other.getInstallationError() && getCsimErrorCode() == _other.getCsimErrorCode() && getFunctionExecutionStatus() == _other.getFunctionExecutionStatus());
         }
         inline bool operator!=(const InstallationResult &_other) const {
             return !((*this) == _other);
@@ -1538,11 +1600,18 @@ namespace CommonAPI {
 
 
 namespace std {
-    //Hash for ConfigureProfileHotspotResult
+    //Hash for ChangePinResult
     template<>
-    struct hash< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::ConfigureProfileHotspotResult> {
-        inline size_t operator()(const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::ConfigureProfileHotspotResult& configureProfileHotspotResult) const {
-            return static_cast< uint8_t>(configureProfileHotspotResult);
+    struct hash< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::ChangePinResult> {
+        inline size_t operator()(const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::ChangePinResult& changePinResult) const {
+            return static_cast< uint8_t>(changePinResult);
+        }
+    };
+    //Hash for ConfigureDataConnectionResult
+    template<>
+    struct hash< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::ConfigureDataConnectionResult> {
+        inline size_t operator()(const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::ConfigureDataConnectionResult& configureDataConnectionResult) const {
+            return static_cast< uint8_t>(configureDataConnectionResult);
         }
     };
     //Hash for ConfigureProfileRoamingResult
@@ -1627,13 +1696,6 @@ namespace std {
     struct hash< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::VerifyPinResult> {
         inline size_t operator()(const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::VerifyPinResult& verifyPinResult) const {
             return static_cast< uint8_t>(verifyPinResult);
-        }
-    };
-    //Hash for ChangePinResult
-    template<>
-    struct hash< ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::ChangePinResult> {
-        inline size_t operator()(const ::de::bmw::infotainment::telematic::simprofileselectortypes::SimProfileSelectorTypes::ChangePinResult& changePinResult) const {
-            return static_cast< uint8_t>(changePinResult);
         }
     };
 }
